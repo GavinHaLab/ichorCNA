@@ -1,55 +1,53 @@
 #' Runs ichorCNA
 #'
-#' @param tumor_wig, type = "character", help = "Path to tumor WIG file. Required.")
-#' @param normal_wig  type = "character", default=NULL, help = "Path to normal WIG file. Default: [%default]")
-#' @param gcWig  type = "character", help = "Path to GC-content WIG file; Required"),
-#' @param mapWig  type = "character", default=NULL, help = "Path to mappability score WIG file. Default: [%default]"),
-#' @param repTimeWig  type = "character", default=NULL, help ="Path to replication timing WIG file. Default: [%default]"),
-#' @param normalPanel  type="character", default=NULL, help="Median corrected depth from panel of normals. Default: [%default]"),
-#' @param sex  type = "character", default = NULL, help = "User specified gender: male or female [Default: %default]"),
-#' @param exons.bed  type = "character", default=NULL, help = "Path to bed file containing exon regions. Default: [%default]"),
-#' @param id  type = "character", default="test", help = "Patient ID. Default: [%default]"),
-#' @param centromere  type="character", default=NULL, help = "File containing Centromere locations; if not provided then will use hg19 version from ichorCNA package. Default: [%default]"),
-#' @param minMapScore  type = "numeric", default=0.9, help="Include bins with a minimum mappability score of this value. Default: [%default]."),
-#' @param flankLength  type="numeric", default=1e5, help="Length of region flanking centromere to remove. Default: [%default]"),
-#' @param normal  type="character", default="0.5", help = "Initial normal contamination; can be more than one value if additional normal initializations are desired. Default: [%default]"),
-#' @param normal.init  type="character", default="c(0.5, 0.5)", help = "Specific initialization of normal contamination for multiple samples. Default: [%default]"),
-#' @param scStates  type="character", default="NULL", help = "Subclonal states to consider. Default: [%default]"),
-#' @param scPenalty  type="numeric", default=0.1, help = "Penalty for subclonal state transitions. 0.1 penalizes subclonal states by ~10%. Default: [%default]"),
-#' @param normal2IgnoreSC  type="numeric", default=1.0, help="Ignore subclonal analysis when normal proportion is >= this value. Default: [%default]"),
-#' @param coverage  type="numeric", default=NULL, help = "PICARD sequencing coverage. Default: [%default]"),
-#' @param likModel  type="character", default="t", help="Likelihood model to use. \"t\" or \"gaussian\". Use \"gaussian\" for faster runtimes. Default: [%default]"),
-#' @param lambda  type="character", default="NULL", help="Initial Student's t precision; must contain 4 values (e.g. c(1500,1500,1500,1500)); if not provided then will automatically use based on variance of data. Default: [%default]"),
-#' @param lambdaScaleHyperParam  type="numeric", default=3, help="Hyperparameter (scale) for Gamma prior on Student's-t precision. Default: [%default]"),
-#' @param kappa  type="character", default=50, help="Initial state distribution"),
-#' @param ploidy  type="character", default="2", help = "Initial tumour ploidy; can be more than one value if additional ploidy initializations are desired. Default: [%default]"),
-#' @param maxCN  type="numeric", default=7, help = "Total clonal CN states. Default: [%default]"),
-#' @param estimateNormal  type="logical", default=TRUE, help = "Estimate normal. Default: [%default]"),
-#' @param estimateScPrevalence  type="logical", default=TRUE, help = "Estimate subclonal prevalence. Default: [%default]"),
-#' @param estimatePloidy  type="logical", default=TRUE, help = "Estimate tumour ploidy. Default: [%default]"),
-#' @param maxFracCNASubclone  type="numeric", default=0.7, help="Exclude solutions with fraction of subclonal events greater than this value. Default: [%default]"),
-#' @param maxFracGenomeSubclone  type="numeric", default=0.5, help="Exclude solutions with subclonal genome fraction greater than this value. Default: [%default]"),
-#' @param minSegmentBins  type="numeric", default=50, help="Minimum number of bins for largest segment threshold required to estimate tumor fraction; if below this threshold, then will be assigned zero tumor fraction."),
-#' @param altFracThreshold  type="numeric", default=0.05, help="Minimum proportion of bins altered required to estimate tumor fraction; if below this threshold, then will be assigned zero tumor fraction. Default: [%default]"),
-#' @param chrNormalize  type="character", default="c(1:22)", help = "Specify chromosomes to normalize GC/mappability biases. Default: [%default]"),
-#' @param chrTrain  type="character", default="c(1:22)", help = "Specify chromosomes to estimate params. Default: [%default]"),
-#' @param chrs  type="character", default="c(1:22,\"X\")", help = "Specify chromosomes to analyze. Default: [%default]"),
-#' @param genomeBuild  type="character", default="hg19", help="Geome build. Default: [%default]"),
-#' @param genomeStyle  type = "character", default = "NCBI", help = "NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string. [Default: %default]"),
-#' @param normalizeMaleX  type="logical", default=TRUE, help = "If male, then normalize chrX by median. Default: [%default]"),
-#' @param fracReadsInChrYForMale  type="numeric", default=0.001, help = "Threshold for fraction of reads in chrY to assign as male. Default: [%default]"),
-#' @param includeHOMD  type="logical", default=FALSE, help="If FALSE, then exclude HOMD state. Useful when using large bins (e.g. 1Mb). Default: [%default]"),
-#' @param txnE  type="numeric", default=0.9999999, help = "Self-transition probability. Increase to decrease number of segments. Default: [%default]"),
-#' @param txnStrength  type="numeric", default=1e7, help = "Transition pseudo-counts. Exponent should be the same as the number of decimal places of --txnE. Default: [%default]"),
-#' @param multSampleTxnStrength  type="numeric", default=1, help="Strength of same state transition between multiple samples. Default: [%default]"),
-#' @param plotFileType  type="character", default="pdf", help = "File format for output plots. Default: [%default]"),
-#' @param plotYLim  type="character", default="c(-2,2)", help = "ylim to use for chromosome plots. Default: [%default]"),
-#' @param outDir  type="character", default="./", help = "Output Directory. Default: [%default]"),
-#' @param cores  type="numeric", default = 1, help = "Number of cores to use for EM. Default: [%default]")
-#' @return 
-#' @details
+#' @param tumor_wig Path to tumor WIG file. Required.
+#' @param normal_wig  Path to normal WIG file. 
+#' @param gcWig  Path to GC-content WIG file; Required.
+#' @param mapWig  Path to mappability score WIG file. 
+#' @param repTimeWig  Path to replication timing WIG file. 
+#' @param normal_panel  Median corrected depth from panel of normals. 
+#' @param sex  User specified gender: male or female 
+#' @param exons.bed  Path to bed file containing exon regions. 
+#' @param id  Patient ID. 
+#' @param centromere  File containing Centromere locations; if not provided then will use hg19 version from ichorCNA package. 
+#' @param minMapScore  Include bins with a minimum mappability score of this value. 
+#' @param flankLength  Length of region flanking centromere to remove. 
+#' @param normal  Initial normal contamination; can be more than one value if additional normal initializations are desired. 
+#' @param normal.init  Specific initialization of normal contamination for multiple samples. 
+#' @param scStates  Subclonal states to consider. 
+#' @param scPenalty  Penalty for subclonal state transitions, 0.1 penalizes subclonal states by ~10 percent. 
+#' @param normal2IgnoreSC  Ignore subclonal analysis when normal proportion is greater than this value. 
+#' @param coverage  PICARD sequencing coverage. 
+#' @param likModel  Likelihood model to use: "t" or "gaussian". Use "gaussian" for faster runtimes. 
+#' @param lambda  Initial Student's t precision; must contain 4 values (e.g. c(1500,1500,1500,1500)); if not provided then will automatically use based on variance of data. 
+#' @param lambdaScaleHyperParam  Hyperparameter (scale) for Gamma prior on Student's-t precision. 
+#' @param kappa  Initial state distribution")
+#' @param ploidy  Initial tumour ploidy; can be more than one value if additional ploidy initializations are desired. 
+#' @param maxCN  Total clonal CN states. 
+#' @param estimateNormal  Estimate normal. 
+#' @param estimateScPrevalence  Estimate subclonal prevalence. 
+#' @param estimatePloidy  Estimate tumour ploidy. 
+#' @param maxFracCNASubclone Exclude solutions with fraction of subclonal events greater than this value. 
+#' @param maxFracGenomeSubclone Exclude solutions with subclonal genome fraction greater than this value. 
+#' @param minSegmentBins Minimum number of bins for largest segment threshold required to estimate tumor fraction if below this threshold, then will be assigned zero tumor fraction.
+#' @param altFracThreshold  Minimum proportion of bins altered required to estimate tumor fraction; if below this threshold, then will be assigned zero tumor fraction. 
+#' @param chrNormalize  Specify chromosomes to normalize GC/mappability biases. 
+#' @param chrTrain  Specify chromosomes to estimate params. 
+#' @param chrs  Specify chromosomes to analyze. 
+#' @param genomeBuild  Geome build.
+#' @param genomeStyle  NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string. 
+#' @param normalizeMaleX  If male, then normalize chrX by median. 
+#' @param fracReadsInChrYForMale  Threshold for fraction of reads in chrY to assign as male. 
+#' @param includeHOMD  If FALSE, then exclude HOMD state; Useful when using large bins (e.g. 1Mb). 
+#' @param txnE  Self-transition probability; Increase to decrease number of segments. 
+#' @param txnStrength  Transition pseudo-counts; Exponent should be the same as the number of decimal places of --txnE. 
+#' @param multSampleTxnStrength Strength of same state transition between multiple samples. 
+#' @param plotFileType  File format for output plots. 
+#' @param plotYLim  Ylim to use for chromosome plots. 
+#' @param outDir  Output Directory.
+#' @param cores  Number of cores to use for EM. 
 #' @export
-run_ichorCNA<- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, normal_panel, sex = NULL, exons.bed=NULL, id = "test", 
+run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, normal_panel, sex = NULL, exons.bed=NULL, id = "test", 
              centromere = NULL, minMapScore = 0.9, flankLength = 1e5, normal=0.5,
              normal.init = "c(0.5, 0.5)", scStates = NULL, scPenalty = 0.1, normal2IgnoreSC = 1.0,
              coverage = NULL, likModel = "t", lambda = NULL, lambdaScaleHyperParam = 3,
@@ -286,7 +284,7 @@ for (i in 1:length(ploidy)){
 		#############################################
 		################ RUN HMM ####################
 		#############################################
-    hmmResults.cor <- HMMsegment(tumour_copy, valid, dataType = "copy", 
+    hmmResults.cor <- HMMcopy::HMMsegment(tumour_copy, valid, dataType = "copy", 
                                  param = param, chrTrain = chrTrain, maxiter = 20,
                                  estimateNormal = estimateNormal, estimatePloidy = estimatePloidy, 
                                  estimatePrecision = TRUE, estimateVar = TRUE, 

@@ -1,25 +1,23 @@
 #' Runs createPanelOfNormals for ichorCNA
 #'
-#' @param gcWig  type = "character", help = "GC Wig file for reference genome"),
-#' @param mapWig  type = "character", default=NULL, help = "Mappabiliy Wig file for reference genome"),
-#' @param repTimeWig  type = "character", default=NULL, help ="Path to replication timing WIG file. Default: [%default]"),
-#' @param filelist  type = "character", help = "List of of wig files."),
-#' @param outfile  type = "character", help = "Output file."),
-#' @param centromere  type="character", help = "File containing Centromere locations"),
-#' @param rmCentromereFlankLength  type="numeric", default=1e5, help="Length of region flanking centromere to remove. Default: [%default]"),
-#' @param chrs  type="character", default="c(1:22,\"X\")", help = "Specify chromosomes to analyze."),
-#' @param genomeStyle  type = "character", default = "NCBI", help = "NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string. [Default: %default]"),
-#' @param genomeBuild  type="character", default="hg19", help="Geome build. Default: [%default]"),
-#' @param chrNormalize  type="character", default="c(1:22)", help = "Specify chromosomes to normalize GC/mappability biases"),
-#' @param minMapScore  type = "numeric", default=0.0, help="Include bins with a minimum mappability score of this value. Default: [%default]."),
-#' @param maleChrXLogRThres  type="numeric", default=-0.80, help = "ChrX Log ratio threshold to confirm as male gender."),
-#' @param fracReadsInChrYForMale  type="numeric", default=0.001, help = "Threshold for fraction of reads in chrY to assign as male. Default: [%default]"),
-#' @param exons.bed  type = "character", default=NULL, help = "Path to bed file containing exon regions."),
-#' @param method  type = "character", default="median", help="Median or Mean."),
-#' @param ylim  type = "character", default="c(-2,2)", help="Y-limits for plotting of mean/median log ratios"),
-#' @param plotChrPanels  type = "logical", default = FALSE, help = "Plot PoN values.")
-#' @return 
-#' @details
+#' @param gcWig    GC Wig file for reference genome  
+#' @param mapWig    Mappabiliy Wig file for reference genome  
+#' @param repTimeWig  type = "character", default=NULL, help ="Path to replication timing WIG file.    
+#' @param filelist    List of of wig files.  
+#' @param outfile    Output file.  
+#' @param centromere    File containing Centromere locations  
+#' @param flankLength    Length of region flanking centromere to remove.    
+#' @param chrs    Specify chromosomes to analyze.  
+#' @param genomeStyle    NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string. 
+#' @param genomeBuild    Geome build.    
+#' @param chrNormalize    Specify chromosomes to normalize GC/mappability biases  
+#' @param minMapScore    Include bins with a minimum mappability score of this value. 
+#' @param maleChrXLogRThres    ChrX Log ratio threshold to confirm as male gender.  
+#' @param fracReadsInChrYForMale    Threshold for fraction of reads in chrY to assign as male.    
+#' @param exons.bed    Path to bed file containing exon regions.  
+#' @param method    Median or Mean.  
+#' @param ylim    Y-limits for plotting of mean/median log ratios  
+#' @param plotChrPanels    Plot PoN values.
 #' @export
 createPanelOfNormals <- function(gcWig, mapWig, repTimeWig = NULL, filelist, outfile, centromere, flankLength = 1e5,
                                  chrs = "c(1:22,\"X\")", genomeStyle = "NCBI", genomeBuild = "hg19", 
