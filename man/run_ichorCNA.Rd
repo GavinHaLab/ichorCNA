@@ -18,6 +18,8 @@ run_ichorCNA(
   minMapScore = 0.9,
   flankLength = 1e+05,
   normal = 0.5,
+  estimatePloidy = TRUE,
+  maxFracCNASubclone = 0.7,
   normal.init = "c(0.5, 0.5)",
   scStates = NULL,
   scPenalty = 0.1,
@@ -77,6 +79,10 @@ run_ichorCNA(
 \item{flankLength}{Length of region flanking centromere to remove.}
 
 \item{normal}{Initial normal contamination; can be more than one value if additional normal initializations are desired.}
+
+\item{estimatePloidy}{Estimate tumour ploidy.}
+
+\item{maxFracCNASubclone}{Exclude solutions with fraction of subclonal events greater than this value.}
 
 \item{normal.init}{Specific initialization of normal contamination for multiple samples.}
 
@@ -139,10 +145,6 @@ run_ichorCNA(
 \item{outDir}{Output Directory.}
 
 \item{cores}{Number of cores to use for EM.}
-
-\item{estimatePloidy}{Estimate tumour ploidy.}
-
-\item{maxFracCNASubclone}{Exclude solutions with fraction of subclonal events greater than this value.}
 }
 \description{
 Runs ichorCNA
