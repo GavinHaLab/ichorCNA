@@ -35,25 +35,25 @@
 #' @param chrTrain  Specify chromosomes to estimate params. 
 #' @param chrs  Specify chromosomes to analyze. 
 #' @param genomeBuild  Geome build.
-#' @param genomeStyle  NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string. 
+#' @param genomeStyle  NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have "chr" string. 
 #' @param normalizeMaleX  If male, then normalize chrX by median. 
 #' @param fracReadsInChrYForMale  Threshold for fraction of reads in chrY to assign as male. 
 #' @param includeHOMD  If FALSE, then exclude HOMD state; Useful when using large bins (e.g. 1Mb). 
 #' @param txnE  Self-transition probability; Increase to decrease number of segments. 
-#' @param txnStrength  Transition pseudo-counts; Exponent should be the same as the number of decimal places of --txnE. 
+#' @param txnStrength  Transition pseudo-counts; Exponent should be the same as the number of decimal places of `txnE`. 
 #' @param multSampleTxnStrength Strength of same state transition between multiple samples. 
 #' @param plotFileType  File format for output plots. 
 #' @param plotYLim  Ylim to use for chromosome plots. 
 #' @param outDir  Output Directory.
 #' @param cores  Number of cores to use for EM. 
 #' @export
-run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, normal_panel, sex = NULL, exons.bed=NULL, id = "test", 
+run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, normal_panel=NULL, sex = NULL, exons.bed=NULL, id = "test", 
              centromere = NULL, minMapScore = 0.9, flankLength = 1e5, normal=0.5, estimatePloidy = TRUE, maxFracCNASubclone = 0.7,
              normal.init = "c(0.5, 0.5)", scStates = NULL, scPenalty = 0.1, normal2IgnoreSC = 1.0,
              coverage = NULL, likModel = "t", lambda = NULL, lambdaScaleHyperParam = 3,
              kappa = 50, ploidy = "2", maxCN = 7, estimateNormal = TRUE, estimateScPrevalence = TRUE, 
              maxFracGenomeSubclone = 0.5, minSegmentBins = 50, altFracThreshold = 0.05,
-             chrNormalize = "c(1:22)", chrTrain = "c(1:22)", chrs = "c(1:22,'X')",
+             chrNormalize = c(1:22), chrTrain = c(1:22), chrs = c(1:22,'X'),
              genomeBuild = "hg19", genomeStyle = "UCSC", normalizeMaleX = TRUE, fracReadsInChrYForMale = 0.001,
              includeHOMD = FALSE, txnE = 0.9999999, txnStrength = 1e7, multSampleTxnStrength = 1,
              plotFileType = "pdf", plotYLim = "c(-2,2)", outDir = "./",  cores = 1) {
@@ -80,9 +80,9 @@ run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, norma
   #plotYLim <- eval(parse(text=plotYLim))
   outImage <- paste0(outDir,"/", id,".RData")
   
-  chrs <- as.character(eval(parse(text = chrs)))
-  chrTrain <- as.character(eval(parse(text=chrTrain))); 
-  chrNormalize <- as.character(eval(parse(text=chrNormalize))); 
+  chrs <- as.character(chrs)
+  chrTrain <- as.character(chrTrain); 
+  chrNormalize <- as.character(chrNormalize); 
   seqlevelsStyle(chrs) <- genomeStyle
   seqlevelsStyle(chrNormalize) <- genomeStyle
   seqlevelsStyle(chrTrain) <- genomeStyle

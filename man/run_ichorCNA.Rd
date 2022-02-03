@@ -36,9 +36,9 @@ run_ichorCNA(
   maxFracGenomeSubclone = 0.5,
   minSegmentBins = 50,
   altFracThreshold = 0.05,
-  chrNormalize = "c(1:22)",
-  chrTrain = "c(1:22)",
-  chrs = "c(1:22,'X')",
+  chrNormalize = c(1:22),
+  chrTrain = c(1:22),
+  chrs = c(1:22, "X"),
   genomeBuild = "hg19",
   genomeStyle = "UCSC",
   normalizeMaleX = TRUE,
@@ -124,7 +124,7 @@ run_ichorCNA(
 
 \item{genomeBuild}{Geome build.}
 
-\item{genomeStyle}{NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string.}
+\item{genomeStyle}{NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have "chr" string.}
 
 \item{normalizeMaleX}{If male, then normalize chrX by median.}
 
@@ -134,7 +134,7 @@ run_ichorCNA(
 
 \item{txnE}{Self-transition probability; Increase to decrease number of segments.}
 
-\item{txnStrength}{Transition pseudo-counts; Exponent should be the same as the number of decimal places of --txnE.}
+\item{txnStrength}{Transition pseudo-counts; Exponent should be the same as the number of decimal places of `txnE`.}
 
 \item{multSampleTxnStrength}{Strength of same state transition between multiple samples.}
 
