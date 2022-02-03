@@ -2,3 +2,5 @@
 ^.travis\.yml$
 scripts/
 LICENSE
+^.*\.Rproj$
+^\.Rproj\.user$

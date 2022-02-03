@@ -1,66 +1,46 @@
-#' plotIchorCNAzoom.R
+#' Runs plotIchorCNAzoom
 #' author: Gavin Ha 
 #' Fred Hutchinson Cancer Research Center
 #' contact: <gha@fredhutch.org>
 #' date:  October 8, 2019
 #' description: Generate plots of copy number from On- and Off-target ichorCNA results
 
+#'
+#' @param id  type = "character", help = "Sample ID"),
+#' @param cnFile  type="character", help = "Path to ichorCNA cna.seg output file."),
+#' @param paramFile  type="character", help = "Path to ichorCNA params.txt output file."),
+#' @param geneList  type="character", default=NULL, help = "Path to file containing list of genes with chr, start, end coordinates."),
+#' @param genomeBuild  type="character", default="hg19", help = "Genome build: hg19 or hg38. Default [%default]"),
+#' @param genomeStyle  type = "character", default = "NCBI", help = "NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string. [Default: %default]"),
+#' @param zoom  type = "logical", default = FALSE, help = "Zoom plot; if TRUE, then requires --chrs --start --end to be set. [Default: %default]"),
+#' @param yaxis  type = "character", default = "integer", help = "Data type to plot for y-axis (\"integer\" copy number or \"logratio\"). [Default: %default]"),
+#' @param chrs  type = "character", default = "c(1:22, 'X')", help = "Chromosomes to plot; string [Default: %default"),
+#' @param startPos  type = "integer", default = NULL, help = "Start coordinate for zoom plots"),
+#' @param endPos  type = "integer", default = NULL, help = "End coordinate for zoom plots"),
+#' @param plotYlim  type = "character", default = "c(-2,2)", help = "Y limits for plotting log ratio. [Default: %default]."),
+#' @param plotSize  type = "character", default = "c(5,3)", help = "width and height in inches. [Default: %default]."),
+#' @param plotFormat  type = "character", default = "png", help = "File format of plot. E.g. pdf or png. [Default: %default]."),
+#' @param outPlotFile  type="character", help="Path to output figure file.")
+#' @return 
+#' @details
+#' @export
 
-library(optparse)
-option_list <- list(
-  make_option(c("--id"), type = "character", help = "Sample ID"),
-  #make_option(c("--plot_funcs"), type = "character", help = "Path to file containing plotting R functions to source."),
-  make_option(c("--cnFile"), type="character", help = "Path to ichorCNA cna.seg output file."),
-  make_option(c("--paramFile"), type="character", help = "Path to ichorCNA params.txt output file."),
-  make_option(c("--geneFile"), type="character", default=NULL, help = "Path to file containing list of genes with chr, start, end coordinates."),
-  make_option(c("--genomeBuild"), type="character", default="hg19", help = "Genome build: hg19 or hg38. Default [%default]"),
-  make_option(c("--genomeStyle"), type = "character", default = "NCBI", help = "NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string. [Default: %default]"),
-  make_option(c("--zoom"), type = "logical", default = FALSE, help = "Zoom plot; if TRUE, then requires --chrs --start --end to be set. [Default: %default]"),
-  make_option(c("--yaxis"), type = "character", default = "integer", help = "Data type to plot for y-axis (\"integer\" copy number or \"logratio\"). [Default: %default]"),
-  make_option(c("--chrs"), type = "character", default = "c(1:22, 'X')", help = "Chromosomes to plot; string [Default: %default"),
-  make_option(c("--start"), type = "integer", default = NULL, help = "Start coordinate for zoom plots"),
-  make_option(c("--end"), type = "integer", default = NULL, help = "End coordinate for zoom plots"),
-  make_option(c("--plotYlim"), type = "character", default = "c(-2,2)", help = "Y limits for plotting log ratio. [Default: %default]."),
-  make_option(c("--plotSize"), type = "character", default = "c(5,3)", help = "width and height in inches. [Default: %default]."),
- # make_option(c("--plotFormat"), type = "character", default = "png", help = "File format of plot. E.g. pdf or png. [Default: %default]."),
-  make_option(c("--outPlotFile"), type="character", help="Path to output figure file.")
- # make_option(c("--outDir"), type="character", help="Path to output directory.")
-)
-parseobj <- OptionParser(option_list=option_list, usage = "usage: Rscript %prog [options]")
-opt <- parse_args(parseobj)
-print(opt)
+plotIchorCNAzoom <- function( id, cnFile, paramFile, geneList = NULL, genomeBuild = "hg19", 
+                              genomeStyle = "NCBI", zoom = FALSE, yaxis = "integer", chrs = "c(1:22, 'X')", 
+                              startPos = NULL, endPos = NULL, plotYlim = "c(-2,2)", plotSize = "c(5,3)", 
+                              plotFormat = "png", outPlotFile) {
 
 library(data.table)
 library(GenomicRanges)
 library(stringr)
-#library(ggplot2)
-#library(reshape2)
-#library(diagram)
-#library(igraph)
-#library(tools)
-#library(SNPchip)
-#library(foreach)
-#library(VariantAnnotation)
-#library(doMC)
-#library(quantsmooth)
 
-#source(opt$plot_funcs)
-
-args <- commandArgs(TRUE)
 options(stringsAsFactors=F, scipen=999, bitmapType = "cairo", width=175, useDingbats = FALSE)
 
-id <- opt$id
-cnFile <- opt$cnFile
-paramFile <- opt$paramFile
 chrStr <- as.character(eval(parse(text = "c(opt$chrs)")))
-startPos <- opt$start
-endPos <- opt$end
-zoom <- opt$zoom
+
 ylim <- eval(parse(text = opt$plotYlim))
-geneList <- opt$geneFile
-outPlotFile <- opt$outPlotFile
+
 plotFormat <- tools::file_ext(outPlotFile)
-#outDir <- opt$outDir
 outImage <- gsub(plotFormat, "RData", outPlotFile)
 genomeBuild <- opt$genomeBuild
 genomeStyle <- opt$genomeStyle
@@ -354,3 +334,4 @@ for (j in 1:length(chrStr)){
 }
 
 #save.image(file=outImage)
+}
