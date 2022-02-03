@@ -16,6 +16,7 @@
 ##### FUNCTION TO FILTER CHRS ######
 ####################################
 # updated for GRanges #
+#' @export
 keepChr <- function(tumour_reads, chrs = c(1:22,"X","Y")){	
 	tumour_reads <- GenomeInfoDb::keepSeqlevels(tumour_reads, chrs, pruning.mode="tidy")
 	sortSeqlevels(tumour_reads)
@@ -36,6 +37,7 @@ keepChr <- function(tumour_reads, chrs = c(1:22,"X","Y")){
 ####################################
 ##### FUNCTION GET SEQINFO ######
 ####################################
+#' @export
 getSeqInfo <- function(genomeBuild = "hg19", genomeStyle = "NCBI", chrs = c(1:22, "X")){
 	bsg <- paste0("BSgenome.Hsapiens.UCSC.", genomeBuild)
 	if (!require(bsg, character.only=TRUE, quietly=TRUE, warn.conflicts=FALSE)) {
@@ -54,6 +56,7 @@ getSeqInfo <- function(genomeBuild = "hg19", genomeStyle = "NCBI", chrs = c(1:22
 ##################################################
 ##### FUNCTION TO FILTER CENTROMERE REGIONS ######
 ##################################################
+#' @export
 excludeCentromere <- function(x, centromere, flankLength = 0, genomeStyle = "NCBI"){
 	require(GenomeInfoDb)
 	colnames(centromere)[1:3] <- c("seqnames","start","end")
@@ -88,7 +91,7 @@ setGenomeStyle <- function(x, genomeStyle = "NCBI", species = "Homo_sapiens"){
     x <- x[x %in% autoSexMChr]
     return(x)
 }
-
+#' @export
 wigToGRanges <- function(wigfile, verbose = TRUE){
   output <- tryCatch({
     input <- readLines(wigfile, warn = FALSE)
@@ -123,7 +126,7 @@ wigToGRanges <- function(wigfile, verbose = TRUE){
   return(output)
 }
 
-
+#' @export
 loadReadCountsFromWig <- function(counts, chrs = c(1:22, "X", "Y"), gc = NULL, map = NULL, repTime = NULL, centromere = NULL, flankLength = 100000, targetedSequences = NULL, genomeStyle = "NCBI", applyCorrection = TRUE, mapScoreThres = 0.9, chrNormalize = c(1:22, "X", "Y"), fracReadsInChrYForMale = 0.002, chrXMedianForMale = -0.5, useChrY = TRUE){
 	require(HMMcopy)
 	require(GenomeInfoDb)
@@ -194,13 +197,13 @@ loadReadCountsFromWig <- function(counts, chrs = c(1:22, "X", "Y"), gc = NULL, m
     }
   return(list(counts = counts, gender = gender, gc.fit = gc.fit, map.fit = map.fit, rep.fit = rep.fit))
 }
-
+#' @export
 filterByMappabilityScore <- function(counts, map, mapScoreThres = 0.9){
 	message("Filtering low uniqueness regions with mappability score < ", mapScoreThres)
 	counts <- counts[counts$map >= mapScoreThres, ]
 	return(counts)
 }
-
+#' @export
 filterByTargetedSequences <- function(counts, targetedSequences){
  ### for targeted sequencing (e.g.  exome capture),
     ### ignore bins with 0 for both tumour and normal
@@ -213,7 +216,7 @@ filterByTargetedSequences <- function(counts, targetedSequences){
 
 	return(list(counts=counts, ix=keepInd))
 }
-
+#' @export
 selectFemaleChrXSolution <- function(){
 	
 }
@@ -221,6 +224,7 @@ selectFemaleChrXSolution <- function(){
 ##################################################
 ### FUNCTION TO DETERMINE GENDER #################
 ##################################################
+#' @export
 getGender <- function(rawReads, normReads, gc, map, fracReadsInChrYForMale = 0.002, chrXMedianForMale = -0.5, useChrY = TRUE,
 					  centromere=NULL, flankLength=1e5, targetedSequences=NULL, genomeStyle="NCBI"){
 	chrXStr <- grep("X", runValue(seqnames(normReads)), value = TRUE)
@@ -250,7 +254,7 @@ getGender <- function(rawReads, normReads, gc, map, fracReadsInChrYForMale = 0.0
 	return(list(gender=gender, chrYCovRatio=chrYCov, chrXMedian=chrXMedian))
 }
 	
-	
+#' @export	
 normalizeByPanelOrMatchedNormal <- function(tumour_copy, chrs = c(1:22, "X", "Y"), 
       normal_panel = NULL, normal_copy = NULL, gender = "female", normalizeMaleX = FALSE){
     genomeStyle <- GenomeInfoDb::seqlevelsStyle(tumour_copy)[1]
@@ -313,6 +317,7 @@ normalizeByPanelOrMatchedNormal <- function(tumour_copy, chrs = c(1:22, "X", "Y"
 ##################################################
 ###### FUNCTION TO CORRECT GC/MAP BIASES ########
 ##################################################
+#' @export
 correctReadCounts <- function(x, chrNormalize = c(1:22), mappability = 0.9, samplesize = 50000,
     verbose = TRUE) {
   if (length(x$reads) == 0 | length(x$gc) == 0) {
@@ -379,6 +384,7 @@ correctReadCounts <- function(x, chrNormalize = c(1:22), mappability = 0.9, samp
 
 ## Recompute integer CN for high-level amplifications ##
 ## compute logR-corrected copy number ##
+#' @export
 correctIntegerCN <- function(cn, segs, callColName = "event", 
 		purity, ploidy, cellPrev, maxCNtoCorrect.autosomes = NULL, 
 		maxCNtoCorrect.X = NULL, correctHOMD = TRUE, correctWholeChrXForMales = FALSE,
@@ -493,7 +499,7 @@ correctIntegerCN <- function(cn, segs, callColName = "event",
 	return(list(cn = cn, segs = segs))
 }
 
-
+#' @export
 ## compute copy number using corrected log ratio ##
 logRbasedCN <- function(x, purity, ploidyT, cellPrev=NA, cn = 2){
 	if (length(cellPrev) == 1 && is.na(cellPrev)){
@@ -510,7 +516,7 @@ logRbasedCN <- function(x, purity, ploidyT, cellPrev=NA, cn = 2){
 	return(ct)
 }
 
-
+#' @export
 computeBIC <- function(params){
   iter <- params$iter
   KS <- nrow(params$rho) # num states

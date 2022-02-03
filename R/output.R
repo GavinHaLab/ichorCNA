@@ -13,6 +13,7 @@
 ##################################################
 ###### FUNCTION TO GET OUTPUT HMM RESULTS ########
 ##################################################
+#' @export
 outputHMM <- function(cna, segs, results, patientID = NULL, outDir = "."){
   names <- c("HOMD","HETD","NEUT","GAIN","AMP","HLAMP",paste0("HLAMP", 2:1000))
 
@@ -64,7 +65,7 @@ outputHMM <- function(cna, segs, results, patientID = NULL, outDir = "."){
   message("Outputting to bin-level results to ", cna_out)
   write.table(cnaout, file = cna_out, quote = FALSE, sep = "\t", row.names = FALSE)
 }
-
+#' @export
 outputParametersToFile <- function(hmmResults, file){
   S <- hmmResults$results$param$numberSamples
   x <- hmmResults$results

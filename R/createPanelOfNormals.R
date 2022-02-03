@@ -24,16 +24,16 @@ createPanelOfNormals <- function(gcWig, mapWig, repTimeWig = NULL, filelist, out
                                  chrNormalize = "c(1:22)", minMapScore = 0.0, maleChrXLogRThres = -0.80, 
                                  fracReadsInChrYForMale = 0.001, exons.bed = NULL, method = "median", ylim = "c(-2,2)", 
                                  plotChrPanels = FALSE) {
-library(HMMcopy)
-library(GenomicRanges)
-library(ggplot2)
+  require(HMMcopy)
+  require(GenomicRanges)
+  require(ggplot2)
 
 options(stringsAsFactors=FALSE, scipen=0)
 options(bitmapType='cairo')
 
-ylim <- eval(parse(text = opt$ylim))
-chrs <- as.character(eval(parse(text = opt$chrs)))
-chrNormalize <- as.character(eval(parse(text=opt$chrNormalize))); 
+ylim <- eval(parse(text =ylim))
+chrs <- as.character(eval(parse(text =chrs)))
+chrNormalize <- as.character(eval(parse(text=chrNormalize))); 
 seqlevelsStyle(chrs) <- genomeStyle
 seqlevelsStyle(chrNormalize) <- genomeStyle
 

@@ -27,23 +27,23 @@ plotIchorCNAzoom <- function( id, cnFile, paramFile, geneList = NULL, genomeBuil
                               startPos = NULL, endPos = NULL, plotYlim = "c(-2,2)", plotSize = "c(5,3)", 
                               plotFormat = "png", outPlotFile) {
 
-library(data.table)
-library(GenomicRanges)
-library(stringr)
+require(data.table)
+require(GenomicRanges)
+require(stringr)
 
 options(stringsAsFactors=F, scipen=999, bitmapType = "cairo", width=175, useDingbats = FALSE)
 
-chrStr <- as.character(eval(parse(text = "c(opt$chrs)")))
+chrStr <- as.character(eval(parse(text = "c(chrs)")))
 
-ylim <- eval(parse(text = opt$plotYlim))
+ylim <- eval(parse(text = plotYlim))
 
 plotFormat <- tools::file_ext(outPlotFile)
 outImage <- gsub(plotFormat, "RData", outPlotFile)
-genomeBuild <- opt$genomeBuild
-genomeStyle <- opt$genomeStyle
-yaxis <- opt$yaxis
+genomeBuild <- genomeBuild
+genomeStyle <- genomeStyle
+yaxis <- yaxis
 
-plotSize <- eval(parse(text=opt$plotSize))
+plotSize <- eval(parse(text=plotSize))
 width <- plotSize[1]  #6 8 
 height <- plotSize[2]  #3 3.5 #4 
 spacing <- 3
