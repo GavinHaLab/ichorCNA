@@ -86,7 +86,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, norma
   seqlevelsStyle(chrs) <- genomeStyle
   seqlevelsStyle(chrNormalize) <- genomeStyle
   seqlevelsStyle(chrTrain) <- genomeStyle
-  
+
   
   ## load seqinfo 
   seqinfo <- getSeqInfo(genomeBuild, genomeStyle, chrs)
@@ -207,7 +207,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, norma
   
   } ## end of for each sample
   
-  
+
   
   chrInd <- as.character(seqnames(tumour_copy[[1]])) %in% chrTrain
   ## get positions that are valid
@@ -352,8 +352,8 @@ run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, norma
       loglik[counter, "phi_est"] <- paste(signif(hmmResults.cor$results$phi[, iter], digits = 4), collapse = ",")
       
       counter <- counter + 1
+       }
     }
-  }
   ## remove solutions witn a likelihood of NA (i.e. no solution)
   loglik <- loglik[!is.na(loglik$loglik), ]
   ## get total time for all solutions ##

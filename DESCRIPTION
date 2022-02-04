@@ -1,7 +1,7 @@
 Package: ichorCNA
 Type: Package
 Title: A tool for estimating the fraction of tumor in ultra-low-pass whole genome sequencing (ULP-WGS) of cell-free DNA
-Version: 0.4.1
+Version: 0.4.5
 Date: 2021-02-03
 Author: Gavin Ha, 
 Maintainer: Gavin Ha <gha@fredhutch.org>
@@ -15,8 +15,8 @@ Imports:
   foreach (>= 1.5.0),
   BSgenome.Hsapiens.UCSC.hg19 (>= 1.4.3),
   BSgenome.Hsapiens.UCSC.hg38 (>= 1.4.4),
-  ggplot2,
-  stringr
+  ggplot2 (>= 3.3.5),
+  stringr (>= 1.4.0)
 Description: A tool for estimating the fraction of tumor in ultra-low-pass whole genome sequencing (ULP-WGS) of cell-free DNA.
 License: GPL-3
 URL: https://github.com/GavinHaLab/ichorCNA/
