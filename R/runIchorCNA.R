@@ -53,8 +53,8 @@ run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, norma
              coverage = NULL, likModel = "t", lambda = NULL, lambdaScaleHyperParam = 3,
              kappa = 50, ploidy = "2", maxCN = 7, estimateNormal = TRUE, estimateScPrevalence = TRUE, 
              maxFracGenomeSubclone = 0.5, minSegmentBins = 50, altFracThreshold = 0.05,
-             chrNormalize = c(1:22), chrTrain = c(1:22), chrs = c(1:22,'X'),
-             genomeBuild = "hg19", genomeStyle = "UCSC", normalizeMaleX = TRUE, fracReadsInChrYForMale = 0.001,
+             chrNormalize = "c(1:22)", chrTrain = "c(1:22)", chrs = "c(1:22,\"X\")",
+             genomeBuild = "hg19", genomeStyle = "NCBI", normalizeMaleX = TRUE, fracReadsInChrYForMale = 0.001,
              includeHOMD = FALSE, txnE = 0.9999999, txnStrength = 1e7, multSampleTxnStrength = 1,
              plotFileType = "pdf", plotYLim = "c(-2,2)", outDir = "./",  cores = 1) {
 
@@ -67,22 +67,22 @@ run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, norma
   require(doMC)
   require(data.table)
   
-  # normal <- eval(parse(text = normal))
-  # normal.init <- eval(parse(text = normal.init))
-  # scStates <- eval(parse(text = scStates))
-  # lambda <- eval(parse(text = lambda))
-  # ploidy <- eval(parse(text = ploidy))
-  # normalizeMaleX <- as.logical(normalizeMaleX)
-  # includeHOMD <- as.logical(includeHOMD)
+  normal <- eval(parse(text = normal))
+  normal.init <- eval(parse(text = normal.init))
+  scStates <- eval(parse(text = scStates))
+  #lambda <- eval(parse(text = lambda)) # ??? Fails when NULL
+  ploidy <- eval(parse(text = ploidy))
+  normalizeMaleX <- as.logical(normalizeMaleX)
+  includeHOMD <- as.logical(includeHOMD)
   
   chrXMedianForMale <- -0.1
   
-  #plotYLim <- eval(parse(text=plotYLim))
+  plotYLim <- eval(parse(text=plotYLim))
   outImage <- paste0(outDir,"/", id,".RData")
   
-  chrs <- as.character(chrs)
-  chrTrain <- as.character(chrTrain); 
-  chrNormalize <- as.character(chrNormalize); 
+  chrs <- as.character(eval(parse(text=chrs)))
+  chrTrain <- as.character(eval(parse(text=chrTrain))) 
+  chrNormalize <- as.character(eval(parse(text=chrNormalize))) 
   seqlevelsStyle(chrs) <- genomeStyle
   seqlevelsStyle(chrNormalize) <- genomeStyle
   seqlevelsStyle(chrTrain) <- genomeStyle
