@@ -47,7 +47,7 @@
 #' @param outDir  Output Directory.
 #' @param cores  Number of cores to use for EM. 
 #' @export
-run_ichorCNA <- function(tumor_wig, normal_wig, gcWig, mapWig, repTimeWig, normal_panel=NULL, sex = NULL, exons.bed=NULL, id = "test", 
+run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig, repTimeWig, normal_panel=NULL, sex = NULL, exons.bed=NULL, id = "test", 
              centromere = NULL, minMapScore = 0.9, flankLength = 1e5, normal=0.5, estimatePloidy = TRUE, maxFracCNASubclone = 0.7,
              normal.init = "c(0.5, 0.5)", scStates = NULL, scPenalty = 0.1, normal2IgnoreSC = 1.0,
              coverage = NULL, likModel = "t", lambda = NULL, lambdaScaleHyperParam = 3,

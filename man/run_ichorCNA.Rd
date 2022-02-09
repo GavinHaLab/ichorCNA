@@ -6,7 +6,7 @@
 \usage{
 run_ichorCNA(
   tumor_wig,
-  normal_wig,
+  normal_wig = NULL,
   gcWig,
   mapWig,
   repTimeWig,
