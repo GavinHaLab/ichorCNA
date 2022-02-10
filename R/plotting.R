@@ -141,7 +141,7 @@ plotGWSolution <- function(hmmResults.cor, s, outPlotFile, plotFileType="pdf",
 						   seqinfo = NULL, plotSegs = TRUE, 
                cex = 0.5, cex.axis = 1.5, cex.lab=1.5, cex.text=1.5,
                plotYLim=c(-2,2), estimateScPrevalence, main=NULL, spacing=4,
-               turnDevOn=TRUE, turnDevOff=TRUE){
+               turnDevOn=TRUE, turnDevOff=TRUE, coverage = NULL){
     ## plot genome wide figures for each solution ##
     iter <- hmmResults.cor$results$iter
     ploidyEst <- hmmResults.cor$results$phi[s, iter]

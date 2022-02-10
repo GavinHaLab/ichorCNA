@@ -333,7 +333,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig, repTimeWig
           outPlotFile <- paste0(outDir, "/", id, "/", id, "_genomeWide_", "n", n[s], "-p", p[s])      
           plotGWSolution(hmmResults.cor, s=s, outPlotFile=outPlotFile, plotFileType=plotFileType, 
                 logR.column = "logR", call.column = "Corrected_Call",
-          			 plotYLim=plotYLim, estimateScPrevalence=estimateScPrevalence, seqinfo=seqinfo, main=mainName[[s]][counter])
+          			 plotYLim=plotYLim, estimateScPrevalence=estimateScPrevalence, seqinfo=seqinfo, main=mainName[[s]][counter], coverage = coverage)
         }
       }
       
