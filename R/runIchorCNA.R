@@ -408,7 +408,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig, repTimeWig
                          logR.column = "logR", call.column = "Corrected_Call",
                          plotYLim=plotYLim, estimateScPrevalence=estimateScPrevalence, 
                          seqinfo = seqinfo,
-                         turnDevOn = turnDevOn, turnDevOff = turnDevOff, main=mainName[[s]][ind[i]])
+                         turnDevOn = turnDevOn, turnDevOff = turnDevOff, main=mainName[[s]][ind[i]], coverage = coverage)
     }
   }
   # multisample, combined plots
@@ -430,7 +430,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig, repTimeWig
                          plotYLim=plotYLim, estimateScPrevalence=estimateScPrevalence, 
                          seqinfo = seqinfo, spacing = 4, 
                          cex.text = 1.25, cex=0.5,
-                         turnDevOn = FALSE, turnDevOff = FALSE, main=mainName[[s]][ind[i]])
+                         turnDevOn = FALSE, turnDevOff = FALSE, main=mainName[[s]][ind[i]], coverage = coverage)
       }
     }
     dev.off()
