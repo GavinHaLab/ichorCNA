@@ -8,7 +8,7 @@
 # date:   January 6, 2020
 # description: Hidden Markov model (HMM) to analyze Ultra-low pass whole genome sequencing (ULP-WGS) data.
 # This script is the main script to run the HMM.
-
+#' @export
 runEM <- function(copy, chr, chrInd, param, maxiter, verbose = TRUE, 
 									estimateNormal = TRUE, estimatePloidy = TRUE, 
 									estimateVar = TRUE, estimatePrecision = TRUE,
@@ -290,7 +290,7 @@ runEM <- function(copy, chr, chrInd, param, maxiter, verbose = TRUE,
   
   return(output)
 }
-
+#' @export
 get2and3ComponentMixture <- function(ct, ct.sc.status, n, sp, phi){
   S <- length(n)
   cn <- 2
@@ -304,7 +304,7 @@ get2and3ComponentMixture <- function(ct, ct.sc.status, n, sp, phi){
   }
   return(log(mu))
 }
-
+#' @export
 get2ComponentMixture <- function(ct, n, phi){
   if (length(phi) > 1 && length(phi) != length(n)){
     stop("get2ComponentMixture: length(n) not equal to length(phi)")
@@ -326,6 +326,7 @@ get2ComponentMixture <- function(ct, n, phi){
 # Dirichlet probability density function, returns the probability of vector
 # x under the Dirichlet distribution with parameter vector alpha
 # Author: David Ross http://www.cs.toronto.edu/~dross/code/dirichletpdf.m
+#' @export
 dirichletpdf <- function(x, alpha) {
   if (any(x < 0)) {
     return(0);
@@ -337,33 +338,33 @@ dirichletpdf <- function(x, alpha) {
   p <- exp(lgamma(sum(alpha)) - sum(lgamma(alpha))) * prod(x ^ (alpha - 1))
   return(p)
 }
-
+#' @export
 dirichletpdflog <- function(x, k) {
   c <- lgamma(sum(k, na.rm = TRUE)) - sum(lgamma(k), na.rm = TRUE)  #normalizing constant
   l <- sum((k - 1) * log(x), na.rm = TRUE)  #likelihood
   y <- c + l
   return(y)
 }
-
+#' @export
 gammapdflog <- function(x, a, b) { #rate and scale parameterization
   c <- a * log(b) - lgamma(a)  # normalizing constant  
   l <- (a - 1) * log(x) + (-b * x)  #likelihood  
   y <- c + l
   return(y)
 }
-
+#' @export
 invgammapdflog <- function(x, a, b) {
   c <- a * log(b) - lgamma(a)
   l <- (-a - 1) * log(x) + (-b / x)
   y <- c + l
   return(y)
 }
-
+#' @export
 betapdflog <- function(x, a, b) {
   y = -lbeta(a, b) + (a - 1) * log(x) + (b - 1) * log(1 - x)
   return(y)
 }
-
+#' @export
 tdistPDF <- function(x, mu, lambda, nu) {
   S <- ncol(x)
   if (!is.null(S)){
@@ -381,7 +382,7 @@ tdistPDF <- function(x, mu, lambda, nu) {
   p[is.na(p)] <- 1
   return(p)
 }
-
+#' @export
 normalpdf <- function(x, mu, var){
   # S <- ncol(x)
   # if (!is.null(S)){
@@ -400,7 +401,7 @@ normalpdf <- function(x, mu, var){
   y <- exp(y)
   return(y)
 }
-
+#' @export
 getNormLik <- function(copy, mus, varsKS, sw){
   S <- param$numberSamples
   K <- length(param$ct)
@@ -417,7 +418,7 @@ getNormLik <- function(copy, mus, varsKS, sw){
   py[is.na(py)] <- 1
   return(py)
 }
-
+#' @export
 mvGaussDistPDF <- function(x, mu, covar){
   # Multivariate Gaussian density function, return in exp scale #
   S <- ncol(x)
@@ -430,7 +431,7 @@ mvGaussDistPDF <- function(x, mu, covar){
   y[is.na(y)] <- 0
   return(exp(y))
 }
-
+#' @export
 getCovarianceMatrix <- function(x){
   # sample covariance 
   covar <- cov(x, use = "pairwise.complete.obs")
@@ -438,7 +439,7 @@ getCovarianceMatrix <- function(x){
   cor <- covar[1, 2] / sqrt(covar[1, 1] * covar[2, 2])
   return(list(covar = covar, cor = cor))
 }
-
+#' @export
 # Multivariate gamma function 
 multiGammaFunlog <- function(p, a){
   if (p == 1){
@@ -447,7 +448,7 @@ multiGammaFunlog <- function(p, a){
     return(log(pi ^ ((p - 1) / 2) + multiGammaFunlog(p - 1, a) + multiGammaFunlog(1, a + (1 - p) / 2)))
   }
 }
-
+#' @export
 # Inverse Wishart density function in log scale 
 invWishartpdflog <- function(covar, psi, nu){
   p <- ncol(covar)
@@ -456,7 +457,7 @@ invWishartpdflog <- function(covar, psi, nu){
   y <- const + lik
   return(y)
 }
-
+#' @export
 estimateTParamsMap <- function(D, n_prev, sp_prev, phi_prev, lambda_prev, pi_prev, A_prev, 
                               params, rho, Zcounts, loglik,
                               estimateNormal = TRUE, estimatePloidy = TRUE,
@@ -561,7 +562,7 @@ estimateTParamsMap <- function(D, n_prev, sp_prev, phi_prev, lambda_prev, pi_pre
   #}
   return(list(n = n_hat, sp = sp_hat, phi = phi_hat, lambda = lambda_hat, piG = pi_hat, A = A_hat, F = F_lik))
 }
-
+#' @export
 estimateGaussianParamsMap <- function(D, n_prev, sp_prev, phi_prev, var_prev, pi_prev, A_prev, 
                               params, rho, Zcounts, 
                               estimateNormal = TRUE, estimatePloidy = TRUE,
@@ -661,7 +662,7 @@ estimateGaussianParamsMap <- function(D, n_prev, sp_prev, phi_prev, var_prev, pi
   #}
   return(list(n = n_hat, sp = sp_hat, phi = phi_hat, var = var_hat, piG = pi_hat, A = A_hat))
 }
-
+#' @export
 # Update equation for normal parameter (Gaussian)
 nUpdateEqn <- function(n, sp, phi, var, jointStates, jointCNstates, jointSCstatus, alphaN, betaN, a, b){
   mus <- as.matrix(get2and3ComponentMixture(data.frame(jointCNstates), data.frame(jointSCstatus), n, sp, phi))
@@ -696,7 +697,7 @@ nUpdateEqn <- function(n, sp, phi, var, jointStates, jointCNstates, jointSCstatu
   f <- dQ_dn + dbeta_dn
   return(f)
 }
-
+#' @export
 # Update equation for cellular prevalence parameter (Gaussian)
 spUpdateEqn <- function(sp, n, phi, var, jointStates, jointCNstates, jointSCstatus, alphaSp, betaSp, a, b){
   mus <- as.matrix(get2and3ComponentMixture(data.frame(jointCNstates), data.frame(jointSCstatus), n, sp, phi))
@@ -711,7 +712,7 @@ spUpdateEqn <- function(sp, n, phi, var, jointStates, jointCNstates, jointSCstat
   f <- sum(dQ_ds) + dbeta_ds
   return(f)
 }
-
+#' @export
 # Update equation for tumor ploidy parameter (Gaussian)
 phiUpdateEqn <- function(phi, n, sp, var, jointStates, jointCNstates, jointSCstatus, alphaPhi, betaPhi, a, b){
   mus <- as.matrix(get2and3ComponentMixture(data.frame(jointCNstates), data.frame(jointSCstatus), n, sp, phi))
@@ -726,7 +727,7 @@ phiUpdateEqn <- function(phi, n, sp, var, jointStates, jointCNstates, jointSCsta
   f <- sum(dQ_dphi) + dgamma_dphi
   return(f)
 }
-
+#' @export
 # Update equation for variance parameter (MVN)
 varUpdateEqn <- function(n, sp, phi, jointStates, jointCNstates, jointSCstatus, alphaVar, betaVar, a, b, c){
   mus <- as.matrix(get2and3ComponentMixture(data.frame(jointCNstates), data.frame(jointSCstatus), n, sp, phi))
@@ -753,7 +754,7 @@ varUpdateEqn <- function(n, sp, phi, jointStates, jointCNstates, jointSCstatus, 
   var_hat <- term1 / term2
   return(var_hat)
 }
-
+#' @export
 # Update equation for covariance parameter (Gaussian)
 covarUpdateEqn <- function(covar, n, sp, phi, params, a, b, c){
   mus <- as.matrix(get2and3ComponentMixture(params$jointCNstates, params$jointSCstatus, n, sp, phi))
@@ -772,7 +773,7 @@ covarUpdateEqn <- function(covar, n, sp, phi, params, a, b, c){
   f <- dQ_dcovar - dig_dcovar
   return(f)
 }
-
+#' @export
 # Update equation for covariance parameter (MVN + IW)
 covarIWUpdateEqn <- function(n, sp, phi, params, T, a, b, c){
   mus <- as.matrix(get2and3ComponentMixture(params$jointCNstates, params$jointSCstatus, n, sp, phi))
@@ -784,7 +785,7 @@ covarIWUpdateEqn <- function(n, sp, phi, params, T, a, b, c){
   covar_hat <- (b[k]*params$psi + T*covar_k) / (params$nu + T + S + 1)
   return(covar_hat)
 }
-
+#' @export
 # Student's t likelihood function #
 stLikelihood <- function(n, sp, phi, lambda, params, D, rho){
   KS <- nrow(rho)
@@ -799,7 +800,7 @@ stLikelihood <- function(n, sp, phi, lambda, params, D, rho){
   })
   return(sum(lik))
 }
-
+#' @export
 ## length of x will depend on which pararmeters are being estimated
 ## x values should be same as n, phi, lambda, pi, but may not necessarily
 ## include all of those variables
@@ -846,7 +847,7 @@ completeLikelihoodFun <- function(x, pType, n, sp, phi, lambda, piG, A, params, 
   f <- lik + prior
   return(f)
 }
-
+#' @export
 priorProbs <- function(n, sp, phi, lambda, var, piG, A, params, 
                        estimateNormal = TRUE, estimatePloidy = TRUE,
                        estimateVar = TRUE, estimatePrecision = TRUE, 
@@ -902,7 +903,7 @@ priorProbs <- function(n, sp, phi, lambda, var, piG, A, params,
   return(list(prior = prior, priorA = priorA, priorLambda = priorLambda, 
               priorN = priorN, priorSP = priorSP, priorPhi = priorPhi, priorPi = priorPi))
 }
-
+#' @export
 estimatePrecisionParamMap <- function(lambda, n, phi, params, D, rho){
   mu <- get2ComponentMixture(params$ct, n, phi)
   mu_0 <- get2ComponentMixture(params$ct, params$n_0, params$phi_0)
@@ -915,7 +916,7 @@ estimatePrecisionParamMap <- function(lambda, n, phi, params, D, rho){
        (params$eta * (mu - mu_0) ^ 2 + params$betaLambda))
   return(lambda_hat)
 }
-
+#' @export
 estimateMixWeightsParamMap <- function(rho, kappa) {
   K <- nrow(rho)
   pi <- (rho[, 1] + kappa - 1) #/ (sum(rho[, 1]) + sum(kappa) - K)

@@ -12,6 +12,7 @@
 # This file contains R functions for plotting.
 
 ## plot solutions for all samples
+#' @export
 plotSolutions <- function(hmmResults.cor, tumour_copy, chrs, outDir, counts,
                           logR.column = "logR", call.column = "event", likModel = "t",
                           plotSegs = TRUE, numSamples=1, plotFileType="pdf", 
@@ -134,13 +135,13 @@ plotSolutions <- function(hmmResults.cor, tumour_copy, chrs, outDir, counts,
   }
 }
 
-
+#' @export
 plotGWSolution <- function(hmmResults.cor, s, outPlotFile, plotFileType="pdf", 
 						   logR.column = "logR", call.column = "event",
 						   seqinfo = NULL, plotSegs = TRUE, 
                cex = 0.5, cex.axis = 1.5, cex.lab=1.5, cex.text=1.5,
                plotYLim=c(-2,2), estimateScPrevalence, main=NULL, spacing=4,
-               turnDevOn=TRUE, turnDevOff=TRUE){
+               turnDevOn=TRUE, turnDevOff=TRUE, coverage = NULL){
     ## plot genome wide figures for each solution ##
     iter <- hmmResults.cor$results$iter
     ploidyEst <- hmmResults.cor$results$phi[s, iter]
@@ -198,7 +199,7 @@ plotGWSolution <- function(hmmResults.cor, s, outPlotFile, plotFileType="pdf",
     }
 }
 
-
+#' @export
 #data is the output format of HMMcopy (*.cna.txt)
 #cytoBand = {T, F}
 #alphaVal = [0,1]
@@ -336,7 +337,7 @@ plotCNlogRByChr <- function(dataIn, segs, param = NULL, logR.column = "logR",
   }
 }
 
-
+#' @export
 plotCorrectionGenomeWide <- function(correctOutput, seqinfo = NULL, chr = NULL, ...) {
   
   if (is.null(chr)){
@@ -406,6 +407,7 @@ plotCorrectionGenomeWide <- function(correctOutput, seqinfo = NULL, chr = NULL, 
 ##################################################
 ### HELPER FUNCTION TO GET GENOME-WIDE COORDS ####
 ##################################################
+#' @export
 plotChrLines <- function(chrs,chrBkpt,yrange, cex.axis=1.5){
   #plot vertical chromosome lines
   for (j in 1:length(chrBkpt)){
@@ -435,7 +437,7 @@ plotChrLines <- function(chrs,chrBkpt,yrange, cex.axis=1.5){
 #   chrBkpt[i+1] <- positions[length(positions)]
 #   return(list(posns=positions,chrBkpt=chrBkpt))
 # }
-
+#' @export
 getGenomeWidePositions <- function(chrs, posns, seqinfo = NULL) {
     # create genome coordinate scaffold
     positions <- as.numeric(posns)
@@ -487,7 +489,7 @@ getGenomeWidePositions <- function(chrs, posns, seqinfo = NULL) {
 #           col = "green")
 #   }
 # }
-
+#' @export
 plotParam <- function(mus, lambdas, nu, vars = NULL, likModel = "t", 
                       jointStates = NULL, subclone = NULL, copy.states = 0:6, ...) {
   #cols <- stateCols()
@@ -528,7 +530,7 @@ plotParam <- function(mus, lambdas, nu, vars = NULL, likModel = "t",
   }
   
 }
-
+#' @export
 plotCovarBias <- function(correctOutput, covar = "gc", 
                           before = "reads", after = "cor.gc", fit = "gc.fit", 
                           points = 10000, xlab = "GC content", 
@@ -578,6 +580,7 @@ plotCovarBias <- function(correctOutput, covar = "gc",
 ######### INCOMPLETE ############
 ## y is the character string for the column to fit the data
 ## x is the GRanges object
+#' @export
 data.fit <- function(x, y){
   ind <- !is.na(values(x)[[y]])
   x <- x[ind]
@@ -587,7 +590,7 @@ data.fit <- function(x, y){
   y.hat <- predict(fit, midpt)
   return(list(fit = fit, y.hat = y.hat, midpt = midpt))
 }
-
+#' @export
 plotFitCompareByChr <- function(x, chr, covar = "repTime", covarName = "Replication Timing",
                                 before = "cor.map", beforeName = "Mappability-Corrected",
                                 after = "cor.rep", afterName = "Replication-Timing-Corrected"){

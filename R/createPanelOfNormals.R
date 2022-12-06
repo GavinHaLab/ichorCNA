@@ -1,69 +1,41 @@
-library(HMMcopy)
-library(GenomicRanges)
-library(optparse)
-library(ggplot2)
+#' Runs createPanelOfNormals for ichorCNA
+#'
+#' @param gcWig    GC Wig file for reference genome  
+#' @param mapWig    Mappabiliy Wig file for reference genome  
+#' @param repTimeWig  type = "character", default=NULL, help ="Path to replication timing WIG file.    
+#' @param filelist    List of of wig files.  
+#' @param outfile    Output file.  
+#' @param centromere    File containing Centromere locations  
+#' @param flankLength    Length of region flanking centromere to remove.    
+#' @param chrs    Specify chromosomes to analyze.  
+#' @param genomeStyle    NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string. 
+#' @param genomeBuild    Geome build.    
+#' @param chrNormalize    Specify chromosomes to normalize GC/mappability biases  
+#' @param minMapScore    Include bins with a minimum mappability score of this value. 
+#' @param maleChrXLogRThres    ChrX Log ratio threshold to confirm as male gender.  
+#' @param fracReadsInChrYForMale    Threshold for fraction of reads in chrY to assign as male.    
+#' @param exons.bed    Path to bed file containing exon regions.  
+#' @param method    Median or Mean.  
+#' @param ylim    Y-limits for plotting of mean/median log ratios  
+#' @param plotChrPanels    Plot PoN values.
+#' @export
+createPanelOfNormals <- function(gcWig, mapWig, repTimeWig = NULL, filelist, outfile, centromere, flankLength = 1e5,
+                                 chrs = "c(1:22,\"X\")", genomeStyle = "NCBI", genomeBuild = "hg19", 
+                                 chrNormalize = "c(1:22)", minMapScore = 0.0, maleChrXLogRThres = -0.80, 
+                                 fracReadsInChrYForMale = 0.001, exons.bed = NULL, method = "median", ylim = "c(-2,2)", 
+                                 plotChrPanels = FALSE) {
+  require(HMMcopy)
+  require(GenomicRanges)
+  require(ggplot2)
 
 options(stringsAsFactors=FALSE, scipen=0)
 options(bitmapType='cairo')
 
-option_list <- list(
-	make_option(c("--gcWig"), type = "character", help = "GC Wig file for reference genome"),
-	make_option(c("--mapWig"), type = "character", default=NULL, help = "Mappabiliy Wig file for reference genome"),
-	make_option(c("--repTimeWig"), type = "character", default=NULL, help ="Path to replication timing WIG file. Default: [%default]"),
-	make_option(c("-f", "--filelist"), type = "character", help = "List of of wig files."),
-	make_option(c("-o", "--outfile"), type = "character", help = "Output file."),
-	make_option(c("-c", "--centromere"), type="character", help = "File containing Centromere locations"),
-	make_option(c("--rmCentromereFlankLength"), type="numeric", default=1e5, help="Length of region flanking centromere to remove. Default: [%default]"),
-	make_option(c("--chrs"), type="character", default="c(1:22,\"X\")", help = "Specify chromosomes to analyze."),
-  	make_option(c("--genomeStyle"), type = "character", default = "NCBI", help = "NCBI or UCSC chromosome naming convention; use UCSC if desired output is to have \"chr\" string. [Default: %default]"),
-	make_option(c("--genomeBuild"), type="character", default="hg19", help="Geome build. Default: [%default]"),
-	make_option(c("--chrNormalize"), type="character", default="c(1:22)", help = "Specify chromosomes to normalize GC/mappability biases"),
-	make_option(c("--minMapScore"), type = "numeric", default=0.0, help="Include bins with a minimum mappability score of this value. Default: [%default]."),
-	make_option(c("--maleChrXLogRThres"), type="numeric", default=-0.80, help = "ChrX Log ratio threshold to confirm as male gender."),
-	make_option(c("--fracReadsInChrYForMale"), type="numeric", default=0.001, help = "Threshold for fraction of reads in chrY to assign as male. Default: [%default]"),
-	make_option(c("-e", "--exons.bed"), type = "character", default=NULL, help = "Path to bed file containing exon regions."),
-	make_option(c("--method"), type = "character", default="median", help="Median or Mean."),
-	make_option(c("--libdir"), type = "character", default=NULL, help = "Script library path. Usually exclude this argument unless custom modifications have been made to the ichorCNA R package code and the user would like to source those R files. Default: [%default]"),
-	make_option(c("--ylim"), type = "character", default="c(-2,2)", help="Y-limits for plotting of mean/median log ratios"),
-	make_option(c("--plotChrPanels"), type = "logical", default = FALSE, help = "Plot PoN values.")
-)
-parseobj <- OptionParser(option_list=option_list)
-opt <- parse_args(parseobj)
-print(opt)
-
-#id <- opt$id
-gcWig <- opt$gcWig
-mapWig <- opt$mapWig
-repTimeWig <- opt$repTimeWig
-filelist <- opt$filelist
-exons.bed <- opt$exons.bed  # "0" if none specified
-centromere <- opt$centromere
-flankLength <- opt$rmCentromereFlankLength
-method <- opt$method
-outfile <- opt$outfile
-genomeStyle <- opt$genomeStyle
-genomeBuild <- opt$genomeBuild
-minMapScore <- opt$minMapScore
-libdir <- opt$libdir
-ylim <- eval(parse(text = opt$ylim))
-plotChrPanels <- opt$plotChrPanels
-maleChrXLogRThres <- opt$maleChrXLogRThres
-fracReadsInChrYForMale <- opt$fracReadsInChrYForMale
-chrs <- as.character(eval(parse(text = opt$chrs)))
-chrNormalize <- as.character(eval(parse(text=opt$chrNormalize))); 
+ylim <- eval(parse(text =ylim))
+chrs <- as.character(eval(parse(text =chrs)))
+chrNormalize <- as.character(eval(parse(text=chrNormalize))); 
 seqlevelsStyle(chrs) <- genomeStyle
 seqlevelsStyle(chrNormalize) <- genomeStyle
-
-## load ichorCNA library or source R scripts
-if (!is.null(libdir) && libdir != "None"){
-	source(paste0(libdir,"/R/utils.R"))
-	source(paste0(libdir,"/R/segmentation.R"))
-	source(paste0(libdir,"/R/EM.R"))
-	source(paste0(libdir,"/R/output.R"))
-	source(paste0(libdir,"/R/plotting.R"))
-} else {
-    library(ichorCNA)
-}
 
 
 if (!is.null(centromere)){
@@ -217,5 +189,5 @@ ggsave(gp, file = outplotfile, width = 16, height = 4)
 
 
 
-
+}
 

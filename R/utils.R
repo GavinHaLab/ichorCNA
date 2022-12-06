@@ -16,37 +16,39 @@
 ##### FUNCTION TO FILTER CHRS ######
 ####################################
 # updated for GRanges #
+#' @export
 keepChr <- function(tumour_reads, chrs = c(1:22,"X","Y")){	
-	tumour_reads <- keepSeqlevels(tumour_reads, chrs, pruning.mode="tidy")
+	tumour_reads <- GenomeInfoDb::keepSeqlevels(tumour_reads, chrs, pruning.mode="tidy")
 	sortSeqlevels(tumour_reads)
 	return(sort(tumour_reads))
 }
 
-filterEmptyChr <- function(gr){
-	require(plyr)
-	ind <- daply(as.data.frame(gr), .variables = "seqnames", .fun = function(x){
-	  rowInd <- apply(x[, 6:ncol(x), drop = FALSE], 1, function(y){
-	    sum(is.na(y)) == length(y)
-	  })
-	  sum(rowInd) == nrow(x)
-	})	
-	return(keepSeqlevels(gr, value = names(which(!ind))))
-}
+# filterEmptyChr <- function(gr){
+# 	require(plyr)
+# 	ind <- daply(as.data.frame(gr), .variables = "seqnames", .fun = function(x){
+# 	  rowInd <- apply(x[, 6:ncol(x), drop = FALSE], 1, function(y){
+# 	    sum(is.na(y)) == length(y)
+# 	  })
+# 	  sum(rowInd) == nrow(x)
+# 	})	
+# 	return(GenomeInfoDb::keepSeqlevels(gr, value = names(which(!ind))))
+# }
 
 ####################################
 ##### FUNCTION GET SEQINFO ######
 ####################################
+#' @export
 getSeqInfo <- function(genomeBuild = "hg19", genomeStyle = "NCBI", chrs = c(1:22, "X")){
 	bsg <- paste0("BSgenome.Hsapiens.UCSC.", genomeBuild)
 	if (!require(bsg, character.only=TRUE, quietly=TRUE, warn.conflicts=FALSE)) {
-		seqinfo <- Seqinfo(genome=genomeBuild)
+		seqinfo <- GenomeInfoDb::Seqinfo(genome=genomeBuild)
 	} else {
 		seqinfo <- seqinfo(get(bsg))
 	}
 	chrs <- as.character(chrs)
-	seqlevelsStyle(seqinfo) <- genomeStyle
-	seqlevelsStyle(chrs) <- genomeStyle
-	seqinfo <- keepSeqlevels(seqinfo, value = chrs)
+	GenomeInfoDb::seqlevelsStyle(seqinfo) <- genomeStyle
+	GenomeInfoDb::seqlevelsStyle(chrs) <- genomeStyle
+	seqinfo <- GenomeInfoDb::keepSeqlevels(seqinfo, value = chrs)
 	#seqinfo <- cbind(seqnames = seqnames(seqinfo), as.data.frame(seqinfo))
 	return(seqinfo)	
 }
@@ -54,6 +56,7 @@ getSeqInfo <- function(genomeBuild = "hg19", genomeStyle = "NCBI", chrs = c(1:22
 ##################################################
 ##### FUNCTION TO FILTER CENTROMERE REGIONS ######
 ##################################################
+#' @export
 excludeCentromere <- function(x, centromere, flankLength = 0, genomeStyle = "NCBI"){
 	require(GenomeInfoDb)
 	colnames(centromere)[1:3] <- c("seqnames","start","end")
@@ -78,7 +81,7 @@ excludeCentromere <- function(x, centromere, flankLength = 0, genomeStyle = "NCB
 setGenomeStyle <- function(x, genomeStyle = "NCBI", species = "Homo_sapiens"){
         require(GenomeInfoDb)
         #chrs <- genomeStyles(species)[c("NCBI","UCSC")]
-        if (!genomeStyle %in% seqlevelsStyle(as.character(x))){
+        if (!genomeStyle %in% GenomeInfoDb::seqlevelsStyle(as.character(x))){
         x <- suppressWarnings(mapSeqlevels(as.character(x),
                                         genomeStyle, drop = FALSE)[1,])
     }
@@ -88,7 +91,7 @@ setGenomeStyle <- function(x, genomeStyle = "NCBI", species = "Homo_sapiens"){
     x <- x[x %in% autoSexMChr]
     return(x)
 }
-
+#' @export
 wigToGRanges <- function(wigfile, verbose = TRUE){
   output <- tryCatch({
     input <- readLines(wigfile, warn = FALSE)
@@ -123,16 +126,16 @@ wigToGRanges <- function(wigfile, verbose = TRUE){
   return(output)
 }
 
-
+#' @export
 loadReadCountsFromWig <- function(counts, chrs = c(1:22, "X", "Y"), gc = NULL, map = NULL, repTime = NULL, centromere = NULL, flankLength = 100000, targetedSequences = NULL, genomeStyle = "NCBI", applyCorrection = TRUE, mapScoreThres = 0.9, chrNormalize = c(1:22, "X", "Y"), fracReadsInChrYForMale = 0.002, chrXMedianForMale = -0.5, useChrY = TRUE){
 	require(HMMcopy)
 	require(GenomeInfoDb)
-	seqlevelsStyle(counts) <- genomeStyle
+	GenomeInfoDb::seqlevelsStyle(counts) <- genomeStyle
 	counts.raw <- counts	
 	counts <- keepChr(counts, chrs)
 	
 	if (!is.null(gc)){ 
-		seqlevelsStyle(gc) <- genomeStyle
+		GenomeInfoDb::seqlevelsStyle(gc) <- genomeStyle
 		tryCatch({
 		  counts$gc <- keepChr(gc, chrs)$value
 		}, error = function(e){
@@ -140,7 +143,7 @@ loadReadCountsFromWig <- function(counts, chrs = c(1:22, "X", "Y"), gc = NULL, m
 		})
 	}
 	if (!is.null(map)){ 
-		seqlevelsStyle(map) <- genomeStyle
+		GenomeInfoDb::seqlevelsStyle(map) <- genomeStyle
 		tryCatch({
 		  counts$map <- keepChr(map, chrs)$value
 		}, error = function(e){
@@ -148,7 +151,7 @@ loadReadCountsFromWig <- function(counts, chrs = c(1:22, "X", "Y"), gc = NULL, m
 		})
 	}
 	if (!is.null(repTime)){
-	  seqlevelsStyle(repTime) <- genomeStyle
+	  GenomeInfoDb::seqlevelsStyle(repTime) <- genomeStyle
 	  tryCatch({
 	    counts$repTime <- keepChr(repTime, chrs)$value
 	    #counts$repTime <- 1 / (1 + exp(-1 * counts$repTime)) # logistic transformation
@@ -167,7 +170,7 @@ loadReadCountsFromWig <- function(counts, chrs = c(1:22, "X", "Y"), gc = NULL, m
 	if (!is.null(targetedSequences)){
 		colnames(targetedSequences)[1:3] <- c("chr", "start", "end")
 		targetedSequences.GR <- as(targetedSequences, "GRanges")
-		seqlevelsStyle(targetedSequences.GR) <- genomeStyle
+		GenomeInfoDb::seqlevelsStyle(targetedSequences.GR) <- genomeStyle
 		countsExons <- filterByTargetedSequences(counts, targetedSequences.GR)
 		counts <- counts[countsExons$ix,]
 	}
@@ -194,13 +197,13 @@ loadReadCountsFromWig <- function(counts, chrs = c(1:22, "X", "Y"), gc = NULL, m
     }
   return(list(counts = counts, gender = gender, gc.fit = gc.fit, map.fit = map.fit, rep.fit = rep.fit))
 }
-
+#' @export
 filterByMappabilityScore <- function(counts, map, mapScoreThres = 0.9){
 	message("Filtering low uniqueness regions with mappability score < ", mapScoreThres)
 	counts <- counts[counts$map >= mapScoreThres, ]
 	return(counts)
 }
-
+#' @export
 filterByTargetedSequences <- function(counts, targetedSequences){
  ### for targeted sequencing (e.g.  exome capture),
     ### ignore bins with 0 for both tumour and normal
@@ -213,7 +216,7 @@ filterByTargetedSequences <- function(counts, targetedSequences){
 
 	return(list(counts=counts, ix=keepInd))
 }
-
+#' @export
 selectFemaleChrXSolution <- function(){
 	
 }
@@ -221,6 +224,7 @@ selectFemaleChrXSolution <- function(){
 ##################################################
 ### FUNCTION TO DETERMINE GENDER #################
 ##################################################
+#' @export
 getGender <- function(rawReads, normReads, gc, map, fracReadsInChrYForMale = 0.002, chrXMedianForMale = -0.5, useChrY = TRUE,
 					  centromere=NULL, flankLength=1e5, targetedSequences=NULL, genomeStyle="NCBI"){
 	chrXStr <- grep("X", runValue(seqnames(normReads)), value = TRUE)
@@ -250,11 +254,11 @@ getGender <- function(rawReads, normReads, gc, map, fracReadsInChrYForMale = 0.0
 	return(list(gender=gender, chrYCovRatio=chrYCov, chrXMedian=chrXMedian))
 }
 	
-	
+#' @export	
 normalizeByPanelOrMatchedNormal <- function(tumour_copy, chrs = c(1:22, "X", "Y"), 
       normal_panel = NULL, normal_copy = NULL, gender = "female", normalizeMaleX = FALSE){
-    genomeStyle <- seqlevelsStyle(tumour_copy)[1]
-    seqlevelsStyle(chrs) <- genomeStyle
+    genomeStyle <- GenomeInfoDb::seqlevelsStyle(tumour_copy)[1]
+    GenomeInfoDb::seqlevelsStyle(chrs) <- genomeStyle
  	### COMPUTE LOG RATIO FROM MATCHED NORMAL OR PANEL AND HANDLE CHRX ###
 	chrXInd <- grep("X", as.character(seqnames(tumour_copy)))
 	chrXMedian <- median(tumour_copy[chrXInd, ]$copy, na.rm = TRUE)
@@ -280,7 +284,7 @@ normalizeByPanelOrMatchedNormal <- function(tumour_copy, chrs = c(1:22, "X", "Y"
 		message("Normalizing Tumour by Panel of Normals (PoN)")
 		## load in IRanges object, then convert to GRanges
 		panel <- readRDS(normal_panel)
-		seqlevelsStyle(panel) <- genomeStyle
+		GenomeInfoDb::seqlevelsStyle(panel) <- genomeStyle
 		panel <- keepChr(panel, chr = chrs)
 		chrXInd.panel <- grep("X", as.character(seqnames(panel)))
         # intersect bins in sample and panel
@@ -313,6 +317,7 @@ normalizeByPanelOrMatchedNormal <- function(tumour_copy, chrs = c(1:22, "X", "Y"
 ##################################################
 ###### FUNCTION TO CORRECT GC/MAP BIASES ########
 ##################################################
+#' @export
 correctReadCounts <- function(x, chrNormalize = c(1:22), mappability = 0.9, samplesize = 50000,
     verbose = TRUE) {
   if (length(x$reads) == 0 | length(x$gc) == 0) {
@@ -379,6 +384,7 @@ correctReadCounts <- function(x, chrNormalize = c(1:22), mappability = 0.9, samp
 
 ## Recompute integer CN for high-level amplifications ##
 ## compute logR-corrected copy number ##
+#' @export
 correctIntegerCN <- function(cn, segs, callColName = "event", 
 		purity, ploidy, cellPrev, maxCNtoCorrect.autosomes = NULL, 
 		maxCNtoCorrect.X = NULL, correctHOMD = TRUE, correctWholeChrXForMales = FALSE,
@@ -493,7 +499,7 @@ correctIntegerCN <- function(cn, segs, callColName = "event",
 	return(list(cn = cn, segs = segs))
 }
 
-
+#' @export
 ## compute copy number using corrected log ratio ##
 logRbasedCN <- function(x, purity, ploidyT, cellPrev=NA, cn = 2){
 	if (length(cellPrev) == 1 && is.na(cellPrev)){
@@ -510,7 +516,7 @@ logRbasedCN <- function(x, purity, ploidyT, cellPrev=NA, cn = 2){
 	return(ct)
 }
 
-
+#' @export
 computeBIC <- function(params){
   iter <- params$iter
   KS <- nrow(params$rho) # num states

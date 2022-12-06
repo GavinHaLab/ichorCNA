@@ -8,7 +8,7 @@
 # date:   January 6, 2020
 # description: Hidden Markov model (HMM) to analyze Ultra-low pass whole genome sequencing (ULP-WGS) data.
 # This script is the main script to run the HMM.
-
+#' @export
 HMMsegment <- function(x, validInd = NULL, dataType = "copy", param = NULL, 
     chrTrain = c(1:22), maxiter = 50, estimateNormal = TRUE, estimatePloidy = TRUE, 
     estimatePrecision = TRUE, estimateVar = TRUE, estimateSubclone = TRUE, estimateTransition = TRUE,
@@ -111,7 +111,7 @@ HMMsegment <- function(x, validInd = NULL, dataType = "copy", param = NULL,
   convergedParams$segs <- segs
   return(list(cna = cnaList, results = convergedParams, viterbiResults = viterbiResults))
 }
-
+#' @export
 getTransitionMatrix <- function(K, e, strength){
   A <- matrix(0, K, K)
   for (j in 1:K) {
@@ -123,7 +123,7 @@ getTransitionMatrix <- function(K, e, strength){
   dirPrior <- A * strength[1]
   return(list(A=A, dirPrior=dirPrior))
 }
-
+#' @export
 getDefaultParameters <- function(x, maxCN = 5, ct.sc = c(1,3), n_0 = 0.5, ploidy_0 = 2, 
                                  normal2IgnoreSC = 0.9, e = 0.9999999, e.subclone = 0.1,
                                  e.sameState = 50, strength = 10000000, 
@@ -295,7 +295,7 @@ getDefaultParameters <- function(x, maxCN = 5, ct.sc = c(1,3), n_0 = 0.5, ploidy
 }
 
 
-
+#' @export
 segmentData <- function(dataGR, validInd, states, convergedParams){
   if (sum(convergedParams$param$ct == 0) ==0){
   	includeHOMD <- FALSE
@@ -354,7 +354,7 @@ segmentData <- function(dataGR, validInd, states, convergedParams){
   return(segList)
 }
     
-
+#' @export
 runViterbi <- function(convergedParams, chr){
   message("runViterbi: Segmenting and classifying")
   chrs <- levels(chr)
@@ -380,7 +380,7 @@ runViterbi <- function(convergedParams, chr){
   }
   return(list(segs=segs, states=Z))
 }
-
+#' @export
 # Normalize a given array to sum to 1
 normalize <- function(A) {
 	vectorNormalize <- function(x){ x / (sum(x) + (sum(x) == 0)) }
