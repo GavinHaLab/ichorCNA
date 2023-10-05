@@ -47,8 +47,9 @@
 #' @param outDir  Output Directory.
 #' @param cores  Number of cores to use for EM. 
 #' @export
-run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig, repTimeWig, normal_panel=NULL, sex = NULL, exons.bed=NULL, id = "test", 
-             centromere = NULL, minMapScore = 0.9, flankLength = 1e5, normal=0.5, estimatePloidy = TRUE, maxFracCNASubclone = 0.7,
+run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, repTimeWig = NULL, 
+             normal_panel = NULL, sex = NULL, exons.bed = NULL, id = "test", centromere = NULL, 
+             minMapScore = 0.9, flankLength = 1e5, normal=0.5, estimatePloidy = TRUE, maxFracCNASubclone = 0.7,
              normal.init = "c(0.5, 0.5)", scStates = NULL, scPenalty = 0.1, normal2IgnoreSC = 1.0,
              coverage = NULL, likModel = "t", lambda = NULL, lambdaScaleHyperParam = 3,
              kappa = 50, ploidy = "2", maxCN = 7, estimateNormal = TRUE, estimateScPrevalence = TRUE, 
@@ -90,7 +91,16 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig, repTimeWig
   
   ## load seqinfo 
   seqinfo <- getSeqInfo(genomeBuild, genomeStyle, chrs)
-  
+
+  ## check required tumor_wig & gcWig have inputs
+  if (missing(tumor_wig) || is.null(tumor_wig)) {
+    stop("tumor wig file not provided but is required")
+  }
+
+  if (missing(gcWig) || is.null(gcWig)) {
+    stop("GC wig file not provided but is required")
+  }
+
   if (substr(tumor_wig,nchar(tumor_wig)-2,nchar(tumor_wig)) == "wig") {
     wigFiles <- data.frame(cbind(id, tumor_wig))
   } else {
@@ -119,6 +129,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig, repTimeWig
   
   ## LOAD GC/MAP/REPTIME WIG FILES ###
   message("Reading GC and mappability files")
+
   gc <- wigToGRanges(gcWig)
   if (is.null(gc)){
       stop("GC wig file not provided but is required")

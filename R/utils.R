@@ -93,6 +93,8 @@ setGenomeStyle <- function(x, genomeStyle = "NCBI", species = "Homo_sapiens"){
 }
 #' @export
 wigToGRanges <- function(wigfile, verbose = TRUE){
+  if(is.null(wigfile)) return(NULL)
+
   output <- tryCatch({
     input <- readLines(wigfile, warn = FALSE)
     breaks <- c(grep("fixedStep", input), length(input) + 1)
