@@ -23,16 +23,16 @@ keepChr <- function(tumour_reads, chrs = c(1:22,"X","Y")){
 	return(sort(tumour_reads))
 }
 
-# filterEmptyChr <- function(gr){
-# 	require(plyr)
-# 	ind <- daply(as.data.frame(gr), .variables = "seqnames", .fun = function(x){
-# 	  rowInd <- apply(x[, 6:ncol(x), drop = FALSE], 1, function(y){
-# 	    sum(is.na(y)) == length(y)
-# 	  })
-# 	  sum(rowInd) == nrow(x)
-# 	})	
-# 	return(GenomeInfoDb::keepSeqlevels(gr, value = names(which(!ind))))
-# }
+filterEmptyChr <- function(gr){
+	require(plyr)
+ 	ind <- daply(as.data.frame(gr), .variables = "seqnames", .fun = function(x){
+ 	  rowInd <- apply(x[, 6:ncol(x), drop = FALSE], 1, function(y){
+ 	    sum(is.na(y)) == length(y)
+ 	  })
+ 	  sum(rowInd) == nrow(x)
+ 	})
+ 	return(GenomeInfoDb::keepSeqlevels(gr, value = names(which(!ind))))
+}
 
 ####################################
 ##### FUNCTION GET SEQINFO ######
