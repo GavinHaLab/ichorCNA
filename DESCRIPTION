@@ -16,7 +16,7 @@ Imports:
   BSgenome.Hsapiens.UCSC.hg19 (>= 1.4.3),
   BSgenome.Hsapiens.UCSC.hg38 (>= 1.4.5),
   ggplot2 (>= 3.4.3),
-  stringr (>= 1.5.0)
+  stringr (>= 1.5.0),
   data.table (>= 1.14),
   plyr (>= 1.8)
 Description: A tool for estimating the fraction of tumor in ultra-low-pass whole genome sequencing (ULP-WGS) of cell-free DNA.
