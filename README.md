@@ -4,7 +4,7 @@
 ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ultra-low-pass whole genome sequencing (ULP-WGS, 0.1x coverage). 
 
 ## Docker version for ichorCNA
-Dockerfile is available here https://github.com/GavinHaLab/WDL-Pipelines/tree/main/ichorCNA
+Use the Dockerfile available under this [repo](https://github.com/GavinHaLab/WDL-Pipelines/tree/main/ichorCNA)  
 
 ## ichorCNA Wiki Page
 **For more details on usage/pipelines, outputs, and FAQs, please visit the [GitHub Wiki page for ichorCNA](https://github.com/broadinstitute/ichorCNA/wiki)**
