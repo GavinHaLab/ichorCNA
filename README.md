@@ -7,7 +7,7 @@ ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ul
 Use this [Dockerfile](https://github.com/GavinHaLab/ichorCNA_WDL/blob/main/Docker/Dockerfile) 
 Docker image `gavinhalab/ichorcna:1.0.0` found on [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
 
-The WDL pipleine uses [ichorCNA:v0.5.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.5.0] for (https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL) and docker image `gavinhalab/ichorcna:1.0.0` found on [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
+The [WDL pipleine](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL) uses [ichorCNA:v0.5.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.5.0); docker image `gavinhalab/ichorcna:1.0.0` found on [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
 
 To run the WDL pipeline, please follow the instructions [here](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL#readme)
 
