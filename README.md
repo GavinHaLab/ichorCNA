@@ -13,9 +13,6 @@ ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ul
    - Clone [ichorCNA:v0.4.0](https://github.com/GavinHaLab/ichorCNA/tree/v0.4.0) or download [v0.4.0.tar.gz](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.4.0)
    - To run the Snakemake pipeline, please follow instructions [here](https://github.com/broadinstitute/ichorCNA/wiki/SnakeMake-pipeline-for-ichorCNA)
 
-## ichorCNA Wiki Page
-**For more details on usage/pipelines, outputs, and FAQs, please visit the [GitHub Wiki page for ichorCNA](https://github.com/broadinstitute/ichorCNA/wiki)**
-
 ## Description
 ichorCNA uses a probabilistic model, implemented as a hidden Markov model (HMM), to simultaneously segment the genome, predict large-scale copy number alterations, and estimate the tumor fraction of a ultra-low-pass whole genome sequencing sample (ULP-WGS). 
 
