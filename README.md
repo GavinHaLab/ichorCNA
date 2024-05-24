@@ -1,12 +1,17 @@
-[![Build Status](https://travis-ci.com/broadinstitute/ichorCNA.svg?branch=master)](https://travis-ci.com/broadinstitute/ichorCNA)
-
 # *ichorCNA*
-ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ultra-low-pass whole genome sequencing (ULP-WGS, 0.1x coverage). 
+ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ultra-low-pass whole genome sequencing (ULP-WGS, 0.1x coverage). This is a version maintained by the laboratory of Gavin Ha.
 
-## WDL Pipeline for ichorCNA
+## How to run ichorCNA
 
-The [WDL pipleine](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL) uses [ichorCNA:v0.5.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.5.0); docker image `gavinhalab/ichorcna:1.0.0` found on [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general) \
-To run the WDL pipeline, please follow the instructions [here](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL#readme)
+1. WDL pipleine
+   - The [WDL pipleine](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL) uses release [ichorCNA:v0.5.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.5.0)
+   - The docker image `gavinhalab/ichorcna:1.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
+   - Clone [WDL pipleine](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL)
+   - To run the WDL pipeline, please follow instructions [here](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL#readme)
+2. Snakemake pipeline
+   - The [Snakemake pipeline](https://github.com/GavinHaLab/ichorCNA/tree/v0.4.0/scripts/snakemake) is part of release [ichorCNA:v0.4.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.4.0)
+   - Clone [ichorCNA:v0.4.0](https://github.com/GavinHaLab/ichorCNA/tree/v0.4.0) or download [v0.4.0.tar.gz](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.4.0)
+   - To run the Snakemake pipeline, please follow instructions [here](https://github.com/broadinstitute/ichorCNA/wiki/SnakeMake-pipeline-for-ichorCNA)
 
 ## ichorCNA Wiki Page
 **For more details on usage/pipelines, outputs, and FAQs, please visit the [GitHub Wiki page for ichorCNA](https://github.com/broadinstitute/ichorCNA/wiki)**
@@ -21,17 +26,16 @@ The analysis workflow consists of 2 tasks:
 1. GC-content bias correction (using HMMcopy)  
   a. Computing read coverage from ULP-WGS  
   b. Data correction and normalization  
-3. CNA prediction and estimation of tumor fraction of cfDNA
+2. CNA prediction and estimation of tumor fraction of cfDNA
 
 ## Contacts
 If you have any questions or feedback, please contact us at:  
-**Email:** <ichorcna@broadinstitute.org>  
-**Google Group:** <https://groups.google.com/a/broadinstitute.org/forum/?fromgroups&hl=en#!forum/ichorcna>
+**Email:** <gha@fredhutch.org> or <pchandra@fredhutch.org>
 
 ## Acknowledgements
-ichorCNA is developed and maintained by Gavin Ha, Justin Rhoades, and Sam Freeman.  
+ichorCNA is maintained by Gavin Ha, Pooja Chandra, and Michael Yang.  
 
-This work was done in collaboration with  
+ichorCNA was originally developed in collaboration with  
 - **Blood Biopsy Group**, Group Leader **Viktor Adalsteinsson**, Broad Institute of MIT and Harvard
 - Laboratory of **Matthew Meyerson**, Medical Oncology, Dana-Farber Cancer Institute
 - Laboratory of **J. Christopher Love**, Koch Institute for integrative cancer research at MIT
@@ -39,7 +43,7 @@ This work was done in collaboration with
 
 ## Software License
 ichorCNA
-Copyright (C) 2017  Broad Institute
+Copyright (C) 2024 Gavin Ha Lab
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
