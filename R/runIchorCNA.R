@@ -272,7 +272,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
       #   likModel <- "Gaussian"
       #   message("Switching to Gaussian likelihood model.")
       # }
-      
+
       logR <- as.data.frame(lapply(tumour_copy, function(x) { x$copy })) # NEED TO EXCLUDE CHR X #
       param <- getDefaultParameters(logR[valid & chrInd, , drop=F], n_0 = n, maxCN = maxCN, 
         includeHOMD = includeHOMD, 
@@ -301,7 +301,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
                                    estimatePrecision = TRUE, estimateVar = TRUE, 
                                    estimateSubclone = estimateScPrevalence, estimateTransition = TRUE,
                                    estimateInitDist = TRUE, likChangeConvergence = 1e-4, verbose = TRUE)
-  
+
       for (s in 1:numSamples){
     		iter <- hmmResults.cor$results$iter
     		id <- names(hmmResults.cor$cna)[s]
@@ -447,22 +447,45 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
     dev.off()
   }
   
-  ## output text files 
-  hmmResults.cor <- results[[ind[1]]]
-  hmmResults.cor$results$loglik <- as.data.frame(loglik)
-  hmmResults.cor$results$gender <- gender$gender
-  hmmResults.cor$results$chrYCov <- gender$chrYCovRatio
-  hmmResults.cor$results$chrXMedian <- gender$chrXMedian
-  hmmResults.cor$results$coverage <- coverage
   
-  outputHMM(cna = hmmResults.cor$cna, segs = hmmResults.cor$results$segs, 
-                        results = hmmResults.cor$results, patientID = id, outDir=outDir)
-  outFile <- paste0(outDir, "/", id, ".params.txt")
-  outputParametersToFile(hmmResults.cor, file = outFile)
-  
-  ## plot solutions for all samples 
-  plotSolutions(hmmResults.cor, tumour_copy, chrs, outDir, counts, numSamples=numSamples,
-                logR.column = "logR", call.column = "event", likModel = likModel,
-                plotFileType=plotFileType, plotYLim=plotYLim, seqinfo = seqinfo,
-                estimateScPrevalence=estimateScPrevalence, maxCN=maxCN)
+ # Loop through and output plots and results for each solution
+  for (i in 1:length(ind)){
+
+    # Extract the corresponding purity and ploidy for this solution. This is only used for naming the subfolders
+    n_0 = loglik[[ ind[i], "n_0" ]]
+    phi_0 = loglik[[ ind[i], "phi_0" ]]
+    #message("n from loglik results:", n_0)
+    #message("p from loglik results:", phi_0)
+    
+    # Name the optimal solution folder with the optimal tag
+    if (i == 1){
+      solution = "/solution_optimal_n"
+    }else{
+      solution = "/solution_n"
+    }
+    
+    # Create subfolders to hold each solution
+    dir.create(paste0(outDir, "/", id, solution, n_0, "_p", phi_0, "/"))
+    dir.create(paste0(outDir, "/", id, solution, n_0, "_p", phi_0, "/", id, "/"))
+    temp_outDir = paste0(outDir, "/", id, solution, n_0, "_p", phi_0, "/")
+    
+    ## output text files 
+    hmmResults.cor <- results[[ind[i]]]
+    hmmResults.cor$results$loglik <- as.data.frame(loglik)
+    hmmResults.cor$results$gender <- gender$gender
+    hmmResults.cor$results$chrYCov <- gender$chrYCovRatio
+    hmmResults.cor$results$chrXMedian <- gender$chrXMedian
+    hmmResults.cor$results$coverage <- coverage
+    
+    outputHMM(cna = hmmResults.cor$cna, segs = hmmResults.cor$results$segs, 
+                          results = hmmResults.cor$results, patientID = id, outDir=temp_outDir)
+    outFile <- paste0(temp_outDir, "/", id, ".params.txt")
+    outputParametersToFile(hmmResults.cor, file = outFile)
+    
+    ## plot solutions for all samples 
+    plotSolutions(hmmResults.cor, tumour_copy, chrs, temp_outDir, counts, numSamples=numSamples,
+                  logR.column = "logR", call.column = "event", likModel = likModel,
+                  plotFileType=plotFileType, plotYLim=plotYLim, seqinfo = seqinfo,
+                  estimateScPrevalence=estimateScPrevalence, maxCN=maxCN)
+  }
 }
