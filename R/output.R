@@ -108,11 +108,11 @@ outputParametersToFile <- function(hmmResults, file){
 		write.table(paste0("Coverage:\t", coverage), file = fc, col.names = FALSE, 
 								row.names = FALSE, quote = FALSE, sep = "\t")
 	
-    if (!is.null(x$chrYCov)){
+    if (!is.null(x$chrYCov) || !is.na(x$chrYCov)){
       write.table(paste0("ChrY coverage fraction:\t", signif(x$chrYCov[s], digits = 4)), file = fc, col.names = FALSE, 
                   row.names = FALSE, quote = FALSE, sep = "\t")
     }
-    if (!is.null(x$chrXMedian)){
+    if (!is.null(x$chrXMedian) || !is.na(x$chrXMedian)){
       write.table(paste0("ChrX median log ratio:\t", signif(x$chrXMedian[s], digits = 4)), file = fc, col.names = FALSE, 
                   row.names = FALSE, quote = FALSE, sep = "\t")
     }
