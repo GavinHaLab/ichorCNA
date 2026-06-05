@@ -5,12 +5,12 @@ ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ul
 
 1. WDL pipleine
    - The [WDL pipeline](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL) uses release [ichorCNA:v0.6.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.0)
-   - The docker image `gavinhalab/ichorcna:3.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
+   - The docker image `gavinhalab/ichorcna:4.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
    - Clone [WDL pipleine](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL)
    - To run the WDL pipeline, please follow instructions [here](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL#readme)
 2. Nextflow pipleine
    - The [Nextflow pipeline](https://github.com/GavinHaLab/Nextflow-Pipelines/tree/main/ichorCNA) uses release [ichorCNA:v0.6.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.0)
-   - The docker image `gavinhalab/ichorcna:3.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
+   - The docker image `gavinhalab/ichorcna:4.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
    - Clone [Nextflow pipleine](https://github.com/GavinHaLab/Nextflow-Pipelines/tree/main/ichorCNA)
    - To run the Nextflow pipeline, please follow instructions [here](https://github.com/GavinHaLab/Nextflow-Pipelines/blob/main/ichorCNA/README.md)
 2. Snakemake pipeline
