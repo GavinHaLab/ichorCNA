@@ -251,7 +251,7 @@ getGender <- function(rawReads, normReads, gc, map, fracReadsInChrYForMale = 0.0
 	}else{
 		gender <- "unknown" # chrX is not provided
 		chrYCov <- NA
-		chrXMedian <- NULL
+		chrXMedian <- NA
 	}
 	return(list(gender=gender, chrYCovRatio=chrYCov, chrXMedian=chrXMedian))
 }
