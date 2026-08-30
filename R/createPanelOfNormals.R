@@ -31,9 +31,9 @@ createPanelOfNormals <- function(gcWig, mapWig, repTimeWig = NULL, filelist, out
 options(stringsAsFactors=FALSE, scipen=0)
 options(bitmapType='cairo')
 
-ylim <- eval(parse(text =ylim))
-chrs <- as.character(eval(parse(text =chrs)))
-chrNormalize <- as.character(eval(parse(text=chrNormalize))); 
+ylim <- parse_numeric_vector(ylim)
+chrs <- as.character(parse_numeric_vector(chrs))
+chrNormalize <- as.character(parse_numeric_vector(chrNormalize))
 seqlevelsStyle(chrs) <- genomeStyle
 seqlevelsStyle(chrNormalize) <- genomeStyle
 

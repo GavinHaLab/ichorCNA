@@ -12,6 +12,38 @@
 # description: Hidden Markov model (HMM) to analyze Ultra-low pass whole genome sequencing (ULP-WGS) data.
 # This script is the main script to run the HMM.
 
+parse_numeric_vector <- function(str_value) {
+  if (is.null(str_value) || str_value == "NULL" || str_value == "None") {
+    return(NULL)
+  }
+  str_value <- gsub("^c\\(", "", str_value)
+  str_value <- gsub("\\)$", "", str_value)
+  if (grepl(":", str_value)) {
+    parts <- strsplit(str_value, ",")[[1]]
+    result <- c()
+    for (part in parts) {
+      part <- trimws(part)
+      if (grepl(":", part)) {
+        range_parts <- as.numeric(strsplit(part, ":")[[1]])
+        result <- c(result, seq(range_parts[1], range_parts[2]))
+      } else {
+        part <- gsub("\"", "", part)
+        result <- c(result, part)
+      }
+    }
+    return(result)
+  }
+  values <- strsplit(str_value, ",")[[1]]
+  values <- trimws(values)
+  values <- gsub("\"", "", values)
+  numeric_values <- suppressWarnings(as.numeric(values))
+  if (all(!is.na(numeric_values))) {
+    return(numeric_values)
+  } else {
+    return(values)
+  }
+}
+
 ####################################
 ##### FUNCTION TO FILTER CHRS ######
 ####################################

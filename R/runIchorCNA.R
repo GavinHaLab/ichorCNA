@@ -68,22 +68,22 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
   require(doMC)
   require(data.table)
   
-  normal <- eval(parse(text = normal))
-  normal.init <- eval(parse(text = normal.init))
-  scStates <- eval(parse(text = scStates))
-  #lambda <- eval(parse(text = lambda)) # ??? Fails when NULL
-  ploidy <- eval(parse(text = ploidy))
+  normal <- parse_numeric_vector(normal)
+  normal.init <- parse_numeric_vector(normal.init)
+  scStates <- parse_numeric_vector(scStates)
+  #lambda <- parse_numeric_vector(lambda) # ??? Fails when NULL
+  ploidy <- parse_numeric_vector(ploidy)
   normalizeMaleX <- as.logical(normalizeMaleX)
   includeHOMD <- as.logical(includeHOMD)
   
   chrXMedianForMale <- -0.1
   
-  plotYLim <- eval(parse(text=plotYLim))
+  plotYLim <- parse_numeric_vector(plotYLim)
   outImage <- paste0(outDir,"/", id,".RData")
-  
-  chrs <- as.character(eval(parse(text=chrs)))
-  chrTrain <- as.character(eval(parse(text=chrTrain))) 
-  chrNormalize <- as.character(eval(parse(text=chrNormalize))) 
+
+  chrs <- as.character(parse_numeric_vector(chrs))
+  chrTrain <- as.character(parse_numeric_vector(chrTrain))
+  chrNormalize <- as.character(parse_numeric_vector(chrNormalize))
   seqlevelsStyle(chrs) <- genomeStyle
   seqlevelsStyle(chrNormalize) <- genomeStyle
   seqlevelsStyle(chrTrain) <- genomeStyle

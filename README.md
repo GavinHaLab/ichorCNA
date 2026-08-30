@@ -4,13 +4,18 @@ ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ul
 ## How to run ichorCNA
 
 1. WDL pipleine
-   - The [WDL pipeline](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL) uses release [ichorCNA:v0.5.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.5.0)
-   - The docker image `gavinhalab/ichorcna:1.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
+   - The [WDL pipeline](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL) uses release [ichorCNA:v0.6.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.0)
+   - The docker image `gavinhalab/ichorcna:4.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
    - Clone [WDL pipleine](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL)
    - To run the WDL pipeline, please follow instructions [here](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL#readme)
-2. Snakemake pipeline
-   - The [Snakemake pipeline](https://github.com/GavinHaLab/ichorCNA/tree/v0.4.0/scripts/snakemake) is part of release [ichorCNA:v0.4.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.4.0)
-   - Clone [ichorCNA:v0.4.0](https://github.com/GavinHaLab/ichorCNA/tree/v0.4.0) or download [v0.4.0.tar.gz](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.4.0)
+2. Nextflow pipleine
+   - The [Nextflow pipeline](https://github.com/GavinHaLab/Nextflow-Pipelines/tree/main/ichorCNA) uses release [ichorCNA:v0.6.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.0)
+   - The docker image `gavinhalab/ichorcna:4.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
+   - Clone [Nextflow pipleine](https://github.com/GavinHaLab/Nextflow-Pipelines/tree/main/ichorCNA)
+   - To run the Nextflow pipeline, please follow instructions [here](https://github.com/GavinHaLab/Nextflow-Pipelines/blob/main/ichorCNA/README.md)
+3. Snakemake pipeline
+   - The [Snakemake pipeline](https://github.com/GavinHaLab/ichorCNA/tree/v0.7.1/scripts/snakemake) is part of release ichorCNA:v0.7.1, built on [ichorCNA:v0.6.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.0)
+   - Clone [ichorCNA:v0.7.1](https://github.com/GavinHaLab/ichorCNA/tree/v0.7.1)
    - To run the Snakemake pipeline, please follow instructions [here](https://github.com/broadinstitute/ichorCNA/wiki/SnakeMake-pipeline-for-ichorCNA)
 
 ## Description
