@@ -448,12 +448,14 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
   }
   
   
+  loglik <- loglik[ind, ]
+
  # Loop through and output plots and results for each solution
   for (i in 1:length(ind)){
 
     # Extract the corresponding purity and ploidy for this solution. This is only used for naming the subfolders
-    n_0 = loglik[[ ind[i], "n_0" ]]
-    phi_0 = loglik[[ ind[i], "phi_0" ]]
+    n_0 = loglik[[ i, "n_0" ]]
+    phi_0 = loglik[[ i, "phi_0" ]]
     #message("n from loglik results:", n_0)
     #message("p from loglik results:", phi_0)
     
@@ -481,8 +483,11 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
                           results = hmmResults.cor$results, patientID = id, outDir=temp_outDir)
     outFile <- paste0(temp_outDir, "/", id, ".params.txt")
     outputParametersToFile(hmmResults.cor, file = outFile)
-    
-    ## plot solutions for all samples 
+    paramsLines <- readLines(outFile)
+    paramsLines[grepl("^Log-likelihood:", paramsLines)] <- paste0("Log-likelihood:\t", loglik$loglik[i])
+    writeLines(paramsLines, outFile)
+
+    ## plot solutions for all samples
     plotSolutions(hmmResults.cor, tumour_copy, chrs, temp_outDir, counts, numSamples=numSamples,
                   logR.column = "logR", call.column = "event", likModel = likModel,
                   plotFileType=plotFileType, plotYLim=plotYLim, seqinfo = seqinfo,

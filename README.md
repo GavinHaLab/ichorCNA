@@ -14,7 +14,7 @@ ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ul
    - Clone [Nextflow pipleine](https://github.com/GavinHaLab/Nextflow-Pipelines/tree/main/ichorCNA)
    - To run the Nextflow pipeline, please follow instructions [here](https://github.com/GavinHaLab/Nextflow-Pipelines/blob/main/ichorCNA/README.md)
 3. Snakemake pipeline
-   - The [Snakemake pipeline](https://github.com/GavinHaLab/ichorCNA/tree/v0.7.1/scripts/snakemake) is part of release ichorCNA:v0.7.1, built on [ichorCNA:v0.6.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.0)
+   - The [Snakemake pipeline](https://github.com/GavinHaLab/ichorCNA/tree/v0.7.1/scripts/snakemake) uses release source code [ichorCNA:v0.7.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.7.0)
    - Clone [ichorCNA:v0.7.1](https://github.com/GavinHaLab/ichorCNA/tree/v0.7.1)
    - To run the Snakemake pipeline, please follow instructions [here](https://github.com/broadinstitute/ichorCNA/wiki/SnakeMake-pipeline-for-ichorCNA)
 
