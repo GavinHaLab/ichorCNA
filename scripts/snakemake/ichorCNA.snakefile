@@ -3,7 +3,7 @@ configfile: "config/samples.yaml"
 
 rule all:
   input: 
-  	expand("results/ichorCNA/{tumor}/{tumor}.cna.seg", tumor=config["samples"]),
+  	expand("results/ichorCNA/{tumor}/{tumor}/", tumor=config["samples"]),
   	expand("results/readDepth/{samples}.bin{binSize}.wig", samples=config["samples"], binSize=str(config["binSize"]))
 
 rule read_counter:
@@ -30,7 +30,7 @@ rule ichorCNA:
 	output:
 		#corrDepth="results/ichorCNA/{tumor}/{tumor}.correctedDepth.txt",
 		#param="results/ichorCNA/{tumor}/{tumor}.params.txt",
-		cna="results/ichorCNA/{tumor}/{tumor}.cna.seg",
+		outDir=directory("results/ichorCNA/{tumor}/{tumor}/"),
 		#segTxt="results/ichorCNA/{tumor}/{tumor}.seg.txt",
 		#seg="results/ichorCNA/{tumor}/{tumor}.seg",
 		#rdata="results/ichorCNA/{tumor}/{tumor}.RData"
