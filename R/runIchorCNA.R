@@ -295,7 +295,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
   		#############################################
   		################ RUN HMM ####################
   		#############################################
-      hmmResults.cor <- ichorCNA::HMMsegment(tumour_copy, valid, dataType = "copy", 
+      hmmResults.cor <- HMMsegment(tumour_copy, valid, dataType = "copy", 
                                    param = param, chrTrain = chrTrain, maxiter = 20,
                                    estimateNormal = estimateNormal, estimatePloidy = estimatePloidy, 
                                    estimatePrecision = TRUE, estimateVar = TRUE, 
