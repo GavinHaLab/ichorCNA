@@ -3,20 +3,11 @@ ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ul
 
 ## How to run ichorCNA
 
-1. WDL pipleine
-   - The [WDL pipeline](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL) uses release [ichorCNA:v0.6.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.0)
-   - The docker image `gavinhalab/ichorcna:4.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
-   - Clone [WDL pipleine](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL)
-   - To run the WDL pipeline, please follow instructions [here](https://github.com/GavinHaLab/ichorCNA_WDL/tree/main/WDL#readme)
-2. Nextflow pipleine
-   - The [Nextflow pipeline](https://github.com/GavinHaLab/Nextflow-Pipelines/tree/main/ichorCNA) uses release [ichorCNA:v0.6.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.0)
-   - The docker image `gavinhalab/ichorcna:4.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
+Nextflow pipleine
+   - The [Nextflow pipeline](https://github.com/GavinHaLab/Nextflow-Pipelines/tree/main/ichorCNA) uses release [ichorCNA:v0.6.1](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.1)
+   - The docker image `gavinhalab/ichorcna:5.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
    - Clone [Nextflow pipleine](https://github.com/GavinHaLab/Nextflow-Pipelines/tree/main/ichorCNA)
    - To run the Nextflow pipeline, please follow instructions [here](https://github.com/GavinHaLab/Nextflow-Pipelines/blob/main/ichorCNA/README.md)
-2. Snakemake pipeline
-   - The [Snakemake pipeline](https://github.com/GavinHaLab/ichorCNA/tree/v0.4.0/scripts/snakemake) is part of release [ichorCNA:v0.4.0](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.4.0)
-   - Clone [ichorCNA:v0.4.0](https://github.com/GavinHaLab/ichorCNA/tree/v0.4.0) or download [v0.4.0.tar.gz](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.4.0)
-   - To run the Snakemake pipeline, please follow instructions [here](https://github.com/broadinstitute/ichorCNA/wiki/SnakeMake-pipeline-for-ichorCNA)
 
 ## Description
 ichorCNA uses a probabilistic model, implemented as a hidden Markov model (HMM), to simultaneously segment the genome, predict large-scale copy number alterations, and estimate the tumor fraction of a ultra-low-pass whole genome sequencing sample (ULP-WGS). 
