@@ -2,6 +2,7 @@
 ichorCNA is a tool for estimating the fraction of tumor in cell-free DNA from ultra-low-pass whole genome sequencing (ULP-WGS, 0.1x coverage). This is a version maintained by the laboratory of Gavin Ha.
 
 ## How to run ichorCNA
+
 Nextflow pipleine
    - The [Nextflow pipeline](https://github.com/GavinHaLab/Nextflow-Pipelines/tree/main/ichorCNA) uses release [ichorCNA:v0.6.1](https://github.com/GavinHaLab/ichorCNA/releases/tag/v0.6.1)
    - The docker image `gavinhalab/ichorcna:5.0.0` can be found at [DockerHub](https://hub.docker.com/repository/docker/gavinhalab/ichorcna/general)
