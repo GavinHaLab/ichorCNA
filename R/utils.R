@@ -344,7 +344,7 @@ correctReadCounts <- function(x, chrNormalize = c(1:22), mappability = 0.9, samp
 
   if (verbose) { message("Correcting for GC bias...") }
   set <- which(x$ideal & chrInd)
-  select <- sample(set, min(length(set), samplesize))
+  select <- if (length(set) > samplesize) sample(set, samplesize) else set
   rough <- loess(x$reads[select] ~ x$gc[select], span = 0.03)
   i <- seq(0, 1, by = 0.001)
   final.gc <- loess(predict(rough, i) ~ i, span = 0.3)
@@ -356,7 +356,7 @@ correctReadCounts <- function(x, chrNormalize = c(1:22), mappability = 0.9, samp
     coutlier <- 0.01
     range <- quantile(x$cor.gc[which(x$valid & chrInd)], prob = c(0, 1 - coutlier), na.rm = TRUE)
     set <- which(x$cor.gc < range[2] & chrInd)
-    select <- sample(set, min(length(set), samplesize))
+    select <- if (length(set) > samplesize) sample(set, samplesize) else set
     final.map <- approxfun(lowess(x$map[select], x$cor.gc[select]))
     x$cor.map <- x$cor.gc / final.map(x$map)
   } else {
@@ -370,7 +370,7 @@ correctReadCounts <- function(x, chrNormalize = c(1:22), mappability = 0.9, samp
     range <- quantile(x$cor.map[which(x$valid & chrInd)], prob = c(0, 1 - coutlier), na.rm = TRUE)
     domain.rep <- quantile(x$repTime[x$valid & chrInd], prob = c(doutlier, 1 - doutlier), na.rm = TRUE)
     set <- which(x$cor.map < range[2] & chrInd)
-    select <- sample(set, min(length(set), samplesize))
+    select <- if (length(set) > samplesize) sample(set, samplesize) else set
     rough <- loess(x$cor.map[select] ~ x$repTime[select], span = 0.03)
     i <- seq(domain.rep[1], domain.rep[2], by = 0.001)
     final.rep <- loess(predict(rough, i) ~ i, span = 0.3)
