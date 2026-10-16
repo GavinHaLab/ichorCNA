@@ -485,7 +485,7 @@ correctIntegerCN <- function(cn, segs, callColName = "event",
 		# 3) correct bins that are missed as high level amplifications
 		ind.hlamp <- which(cn$copy.number >= maxCNtoCorrect.autosomes | 
 	 					(cn$logR_Copy_Number >= maxCNtoCorrect.autosomes * 1.2 & !is.infinite(cn$logR_Copy_Number)))
-		ind.cn <- unique(ind.hlamp, ind.overlapSegs)
+		ind.cn <- setdiff(ind.hlamp, ind.overlapSegs)
 	 	cn$Corrected_Copy_Number[ind.cn] <- as.integer(round(cn$logR_Copy_Number[ind.cn]))
 	 	cn$Corrected_Call[ind.cn] <- names[cn$Corrected_Copy_Number[ind.cn] + 1]
 

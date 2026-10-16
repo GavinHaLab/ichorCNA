@@ -36,6 +36,7 @@ run_ichorCNA(
   maxFracGenomeSubclone = 0.5,
   minSegmentBins = 50,
   altFracThreshold = 0.05,
+  minTumFracToCorrect = 0.05,
   chrNormalize = "c(1:22)",
   chrTrain = "c(1:22)",
   chrs = "c(1:22,\\"X\\")",
@@ -115,6 +116,8 @@ run_ichorCNA(
 \item{minSegmentBins}{Minimum number of bins for largest segment threshold required to estimate tumor fraction if below this threshold, then will be assigned zero tumor fraction.}
 
 \item{altFracThreshold}{Minimum proportion of bins altered required to estimate tumor fraction; if below this threshold, then will be assigned zero tumor fraction.}
+
+\item{minTumFracToCorrect}{Minimum estimated tumor fraction at which the copy number of bins and segments is corrected for tumor fraction.}
 
 \item{chrNormalize}{Specify chromosomes to normalize GC/mappability biases.}
 

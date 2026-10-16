@@ -31,6 +31,7 @@
 #' @param maxFracGenomeSubclone Exclude solutions with subclonal genome fraction greater than this value. 
 #' @param minSegmentBins Minimum number of bins for largest segment threshold required to estimate tumor fraction if below this threshold, then will be assigned zero tumor fraction.
 #' @param altFracThreshold  Minimum proportion of bins altered required to estimate tumor fraction; if below this threshold, then will be assigned zero tumor fraction. 
+#' @param minTumFracToCorrect  Minimum estimated tumor fraction at which the copy number of bins and segments is corrected for tumor fraction. 
 #' @param chrNormalize  Specify chromosomes to normalize GC/mappability biases. 
 #' @param chrTrain  Specify chromosomes to estimate params. 
 #' @param chrs  Specify chromosomes to analyze. 
@@ -53,7 +54,7 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
              normal.init = "c(0.5, 0.5)", scStates = NULL, scPenalty = 0.1, normal2IgnoreSC = 1.0,
              coverage = NULL, likModel = "t", lambda = NULL, lambdaScaleHyperParam = 3,
              kappa = 50, ploidy = "2", maxCN = 7, estimateNormal = TRUE, estimateScPrevalence = TRUE, 
-             maxFracGenomeSubclone = 0.5, minSegmentBins = 50, altFracThreshold = 0.05,
+             maxFracGenomeSubclone = 0.5, minSegmentBins = 50, altFracThreshold = 0.05, minTumFracToCorrect = 0.05,
              chrNormalize = "c(1:22)", chrTrain = "c(1:22)", chrs = "c(1:22,\"X\")",
              genomeBuild = "hg19", genomeStyle = "NCBI", normalizeMaleX = TRUE, fracReadsInChrYForMale = 0.001,
              includeHOMD = FALSE, txnE = 0.9999999, txnStrength = 1e7, multSampleTxnStrength = 1,
@@ -306,15 +307,6 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
     		iter <- hmmResults.cor$results$iter
     		id <- names(hmmResults.cor$cna)[s]
     
-        ## correct integer copy number based on estimated purity and ploidy
-     		correctedResults <- correctIntegerCN(cn = hmmResults.cor$cna[[s]],
-       				segs = hmmResults.cor$results$segs[[s]],
-        			purity = 1 - hmmResults.cor$results$n[s, iter], ploidy = hmmResults.cor$results$phi[s, iter],
-        			cellPrev = 1 - hmmResults.cor$results$sp[s, iter],
-        			maxCNtoCorrect.autosomes = maxCN, maxCNtoCorrect.X = maxCN, minPurityToCorrect = 0.05,
-        			gender = gender$gender, chrs = chrs, correctHOMD = includeHOMD)
-    		hmmResults.cor$results$segs[[s]] <- correctedResults$segs
-    	  hmmResults.cor$cna[[s]] <- correctedResults$cn
     		## convert full diploid solution (of chrs to train) to have 1.0 normal or 0.0 purity
     		## check if there is an altered segment that has at least a minimum # of bins
     		segsS <- hmmResults.cor$results$segs[[s]]
@@ -336,6 +328,15 @@ run_ichorCNA <- function(tumor_wig, normal_wig = NULL, gcWig, mapWig = NULL, rep
     		if ((maxBinLength <= minSegmentBins) & (altFrac <= altFracThreshold)){
     			hmmResults.cor$results$n[s, iter] <- 1.0
     		}
+        ## correct integer copy number based on estimated purity and ploidy
+     		correctedResults <- correctIntegerCN(cn = hmmResults.cor$cna[[s]],
+       				segs = hmmResults.cor$results$segs[[s]],
+        			purity = 1 - hmmResults.cor$results$n[s, iter], ploidy = hmmResults.cor$results$phi[s, iter],
+        			cellPrev = 1 - hmmResults.cor$results$sp[s, iter],
+        			maxCNtoCorrect.autosomes = maxCN, maxCNtoCorrect.X = maxCN, minPurityToCorrect = minTumFracToCorrect,
+        			gender = gender$gender, chrs = chrs, correctHOMD = includeHOMD)
+    		hmmResults.cor$results$segs[[s]] <- correctedResults$segs
+    	  hmmResults.cor$cna[[s]] <- correctedResults$cn
         ## plot solution ##
         mainName[[s]] <- c(mainName[[s]], paste0("Solution: ", counter, ", Sample: ", id, ", n: ", n[s], ", p: ", p[s], 
           ", log likelihood: ", signif(hmmResults.cor$results$loglik[hmmResults.cor$results$iter], digits = 4)))
