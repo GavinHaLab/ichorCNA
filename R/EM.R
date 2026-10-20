@@ -860,8 +860,7 @@ priorProbs <- function(n, sp, phi, lambda, var, piG, A, params,
   priorA <- rep(0, KS)
   if (estimateTransition){
     priorA <- sapply(1:KS, function(ks){
-      #dirichletpdflog(A[ks, ], params$dirPrior[ks, ])
-      dirichletpdflog(params$A_prior[ks, ], A[ks, ])
+      dirichletpdflog(A[ks, ], params$dirPrior[ks, ])
     })
   }
   priorA <- sum(priorA)
